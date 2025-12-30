@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CORTEX | Autonomous Yield Optimization on Solana</title>
+  <meta name="description" content="Cortex is a decentralized yield generation protocol where AI agents manage liquidity vaults on Solana.">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-container">
+    <div class="logo-container">
+      <a href="/" class="logo-link">
+        <img src="images/cortex-logo.png" alt="Cortex" class="logo-image">
+      </a>
+    </div>
+
+    <nav class="main-nav">
+      <ul>
+        <li>
+          <a href="#protocol" class="active">PROTOCOL</a>
+          <div class="nav-hover-square"></div>
+        </li>
+        <li>
+          <a href="#vaults">VAULTS</a>
+          <div class="nav-hover-square"></div>
+        </li>
+        <li>
+          <a href="#staking">STAKING</a>
+          <div class="nav-hover-square"></div>
+        </li>
+        <li>
+          <a href="https://docs.cortex.finance" target="_blank">DOCS</a>
+          <div class="nav-hover-square"></div>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="contact-link">
+      <a href="https://app.cortex.finance" target="_blank">+LAUNCH APP</a>
+    </div>
+  </div>
+</header>
+
+<div class="gradient-reveal"></div>
+
+<div class="audio-enable">
+  <p>AUTONOMOUS YIELD<br />OPTIMIZATION ON SOLANA</p>
+  <span class="hero-subtitle">AI-Powered Vaults • Real Yield • On-Chain Transparency</span>
+  <button class="enable-button" id="enableBtn">ENTER CORTEX</button>
+</div>
+
+<div class="preloader" id="preloader">
+  <span id="counter">[000]</span>
+</div>
+
+<div class="geometric-background">
+  <svg class="geometric-svg" viewBox="0 0 1920 1080">
+    <g id="grid-lines"></g>
+    <g id="circles-outline"></g>
+    <g id="circles-filled">
+      <clipPath id="right-half">
+        <rect x="960" y="0" width="960" height="1080" />
+      </clipPath>
+      <g clip-path="url(#right-half)"></g>
+    </g>
+
+    <text class="geometric-text" x="100" y="100">AUTONOMOUS</text>
+    <text class="geometric-text" x="100" y="115">INTELLIGENCE</text>
+
+    <text class="geometric-text" x="1720" y="100">YIELD</text>
+    <text class="geometric-text" x="1720" y="115">OPTIMIZATION</text>
+
+    <text class="geometric-text" x="100" y="980" id="debugLine1">TVL: $0.00M</text>
+    <text class="geometric-text" x="100" y="995" id="debugLine2">AGENTS: INITIALIZING</text>
+    <text class="geometric-text" x="100" y="1010" id="debugLine3">APY: CALCULATING</text>
+    <text class="geometric-text" x="100" y="1025" id="debugLine4">STATUS: DEVNET</text>
+
+    <text class="geometric-text" x="1620" y="980">POWERED BY</text>
+    <text class="geometric-text" x="1620" y="995">SOLANA</text>
+  </svg>
+</div>
+
+<audio id="startClickSound" preload="auto">
+  <source src="https://assets.codepen.io/7558/preloader-2s-001.mp3" type="audio/mpeg">
+</audio>
+
+<audio id="preloaderSound" preload="auto">
+  <source src="https://assets.codepen.io/7558/preloader-5s-001.mp3" type="audio/mpeg">
+</audio>
+
+<audio id="scrollSound1" loop preload="auto">
+  <source src="https://assets.codepen.io/7558/glitch-fx-001.mp3" type="audio/mpeg">
+</audio>
+
+<audio id="scrollSound2" loop preload="auto">
+  <source src="https://assets.codepen.io/7558/glitch-fx-001.mp3" type="audio/mpeg">
+</audio>
+
+<audio id="scrollSound3" loop preload="auto">
+  <source src="https://assets.codepen.io/7558/glitch-fx-001.mp3" type="audio/mpeg">
+</audio>
+
+<audio id="hoverSound" preload="auto">
+  <source src="https://assets.codepen.io/7558/preloader-2s-001.mp3" type="audio/mpeg">
+</audio>
+
+<audio id="backgroundMusic" loop preload="auto">
+  <source src="https://assets.codepen.io/7558/lxstnght-night-angel.mp3" type="audio/mpeg">
+</audio>
+
+<div class="center-circle">
+  <div class="circle-container">
+    <div class="glowing-circle" id="glowCircle"></div>
+  </div>
+</div>
+
+<section class="section section-1" id="protocol">
+  <div class="section-content">
+    <div class="content-card">
+      <h2 class="section-title">THE PROTOCOL</h2>
+      <p class="section-desc">Cortex deploys AI agents that operate with institutional-grade decision-making. Continuously analyzing market conditions across lending protocols, AMMs, and derivatives markets.</p>
+      <div class="features-grid">
+        <div class="feature-item">
+          <span class="feature-icon">◈</span>
+          <h3>AUTONOMOUS VAULTS</h3>
+          <p>Segregated vaults with distinct risk profiles managed by AI agents</p>
+        </div>
+        <div class="feature-item">
+          <span class="feature-icon">◇</span>
+          <h3>REAL YIELD</h3>
+          <p>Performance fees distributed to stakers in SOL, not inflationary tokens</p>
+        </div>
+        <div class="feature-item">
+          <span class="feature-icon">○</span>
+          <h3>ON-CHAIN TRANSPARENCY</h3>
+          <p>All agent decisions logged and auditable on Solana</p>
+        </div>
+        <div class="feature-item">
+          <span class="feature-icon">□</span>
+          <h3>SMART ALLOCATION</h3>
+          <p>Multi-protocol strategies across Solend, Orca, Meteora & Jupiter</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-2" id="vaults">
+  <div class="section-content">
+    <div class="content-card">
+      <h2 class="section-title">HOW IT WORKS</h2>
+      <div class="flow-container">
+        <div class="flow-step">
+          <span class="step-number">01</span>
+          <h3>DEPOSIT</h3>
+          <p>Deposit SPL tokens into vault, receive share tokens representing your position</p>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <span class="step-number">02</span>
+          <h3>ALLOCATION</h3>
+          <p>AI agent analyzes opportunities, submits optimized strategy transactions</p>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <span class="step-number">03</span>
+          <h3>EXECUTION</h3>
+          <p>Strategy contracts interact with external protocols via CPI</p>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <span class="step-number">04</span>
+          <h3>DISTRIBUTION</h3>
+          <p>Treasury executes buybacks and distributes rewards to stakers</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-3" id="staking">
+  <div class="section-content">
+    <div class="content-card">
+      <h2 class="section-title">TIERED ACCESS</h2>
+      <p class="section-desc">Stake CORTEX tokens to unlock higher-tier vaults and maximize your yield potential.</p>
+      <div class="tiers-grid">
+        <div class="tier-item tier-bronze">
+          <span class="tier-badge">BRONZE</span>
+          <p>Base access to public vaults</p>
+        </div>
+        <div class="tier-item tier-silver">
+          <span class="tier-badge">SILVER</span>
+          <p>Priority allocation + reduced fees</p>
+        </div>
+        <div class="tier-item tier-gold">
+          <span class="tier-badge">GOLD</span>
+          <p>Exclusive vault access + governance</p>
+        </div>
+        <div class="tier-item tier-platinum">
+          <span class="tier-badge">PLATINUM</span>
+          <p>Maximum benefits + revenue share</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="footer-content-section">
+    <div class="footer-content">
+      <div class="footer-left">
+        <p>AUTONOMOUS</p>
+        <p>YIELD</p>
+        <p>OPTIMIZATION</p>
+        <p>PROTOCOL</p>
+        <p>ON</p>
+        <p>SOLANA</p>
+      </div>
+      <div class="footer-right">
+        <p>AI AGENTS EXECUTE STRATEGIES</p>
+        <p>WITH INSTITUTIONAL PRECISION</p>
+        <p>TRANSPARENT DECISIONS</p>
+        <p>AUDITABLE ON-CHAIN</p>
+        <p>REAL YIELD DISTRIBUTION</p>
+        <p>FOR ALL PARTICIPANTS</p>
+      </div>
+    </div>
+    <div class="footer-credits">
+      <p>© 2024 CORTEX PROTOCOL</p>
+    </div>
+    <div class="footer-social">
+      <a href="https://x.com/cortex_protocol" target="_blank">TWITTER</a>
+      <span class="social-divider">|</span>
+      <a href="https://discord.gg/cortex" target="_blank">DISCORD</a>
+      <span class="social-divider">|</span>
+      <a href="https://github.com/cortex-protocol" target="_blank">GITHUB</a>
+      <span class="social-divider">|</span>
+      <a href="https://docs.cortex.finance" target="_blank">DOCS</a>
+    </div>
+  </div>
+  <div class="footer-svg-section">
+    <div class="footer-logo">
+      <span class="footer-logo-text">CORTEX</span>
+      <span class="footer-tagline">WHERE AI MEETS DEFI</span>
+    </div>
+  </div>
+</footer>
+
+<script src="animation.js"></script>
+</body>
+</html>
