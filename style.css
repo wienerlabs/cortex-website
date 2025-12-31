@@ -828,8 +828,11 @@ body::before {
   transform: translateY(-5px);
 }
 
-.critique-icon {
-  font-size: 2rem;
+.critique-number {
+  font-family: var(--font-primary);
+  font-size: 32px;
+  color: rgba(255, 68, 68, 0.3);
+  display: block;
   margin-bottom: 1rem;
 }
 
@@ -905,13 +908,12 @@ body::before {
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url('images/ascii-animation.gif');
+  background-image: url('images/moneyasciii.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  opacity: 0.15;
+  opacity: 0.2;
   z-index: 1;
-  filter: hue-rotate(120deg);
 }
 
 .divider-green {
