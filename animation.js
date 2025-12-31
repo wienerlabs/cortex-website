@@ -402,3 +402,113 @@ function startAnimations() {
   });
   updateAnimations();
 }
+
+// Gemini Effect - Scroll-based SVG path animation
+function setupGeminiEffect() {
+  const geminiSection = document.querySelector('.gemini-section');
+  const paths = document.querySelectorAll('.gemini-path');
+
+  if (!geminiSection || paths.length === 0) return;
+
+  // Initial offsets for staggered animation
+  const initialOffsets = [0.8, 0.85, 0.9, 0.95, 1.0];
+
+  paths.forEach((path, index) => {
+    const length = path.getTotalLength();
+    path.style.strokeDasharray = length;
+    path.style.strokeDashoffset = length;
+  });
+
+  function updateGeminiPaths() {
+    const rect = geminiSection.getBoundingClientRect();
+    const sectionHeight = geminiSection.offsetHeight;
+    const viewportHeight = window.innerHeight;
+
+    // Calculate progress (0 to 1) based on scroll position
+    const scrollStart = rect.top + viewportHeight;
+    const scrollEnd = rect.bottom;
+    const scrollRange = scrollEnd - scrollStart;
+    const scrolled = viewportHeight - rect.top;
+    const progress = Math.max(0, Math.min(1, scrolled / (sectionHeight - viewportHeight * 0.5)));
+
+    paths.forEach((path, index) => {
+      const length = path.getTotalLength();
+      const delay = initialOffsets[index] || 1;
+      const adjustedProgress = Math.max(0, (progress - (1 - delay) * 0.2) / (1 - (1 - delay) * 0.2));
+      const drawLength = length * (1 - Math.max(0, Math.min(1, adjustedProgress * 1.2)));
+      path.style.strokeDashoffset = drawLength;
+    });
+  }
+
+  window.addEventListener('scroll', updateGeminiPaths);
+  updateGeminiPaths();
+}
+
+// Encrypted Text Effect - Scramble on hover
+function setupEncryptedText() {
+  const charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()';
+
+  // Select all paragraph texts in sections (excluding headings)
+  const textElements = document.querySelectorAll('.section-desc, .feature-item p, .ai-card-desc, .tier-item p, .flow-step p');
+
+  textElements.forEach(element => {
+    const originalText = element.textContent;
+    element.dataset.originalText = originalText;
+    element.classList.add('encrypt-text');
+
+    let animationId = null;
+    let isAnimating = false;
+
+    element.addEventListener('mouseenter', () => {
+      if (isAnimating) return;
+      isAnimating = true;
+
+      const text = element.dataset.originalText;
+      let revealCount = 0;
+      const totalChars = text.length;
+
+      // Scramble first
+      let scrambled = text.split('').map(char =>
+        char === ' ' ? ' ' : charset[Math.floor(Math.random() * charset.length)]
+      ).join('');
+      element.textContent = scrambled;
+
+      // Reveal progressively
+      const revealInterval = setInterval(() => {
+        if (revealCount >= totalChars) {
+          clearInterval(revealInterval);
+          element.textContent = text;
+          isAnimating = false;
+          return;
+        }
+
+        let result = '';
+        for (let i = 0; i < totalChars; i++) {
+          if (text[i] === ' ') {
+            result += ' ';
+          } else if (i < revealCount) {
+            result += text[i];
+          } else {
+            result += charset[Math.floor(Math.random() * charset.length)];
+          }
+        }
+        element.textContent = result;
+        revealCount++;
+      }, 30);
+    });
+
+    element.addEventListener('mouseleave', () => {
+      // Quick reset if still animating
+      setTimeout(() => {
+        element.textContent = originalText;
+        isAnimating = false;
+      }, 100);
+    });
+  });
+}
+
+// Initialize new effects
+document.addEventListener('DOMContentLoaded', () => {
+  setupGeminiEffect();
+  setupEncryptedText();
+});
