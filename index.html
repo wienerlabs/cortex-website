@@ -15,7 +15,7 @@
 </head>
 <body>
 
-<header class="site-header">
+<header class="site-header" id="site-header">
   <div class="header-container">
     <div class="logo-container">
       <a href="/" class="logo-link">
@@ -23,30 +23,44 @@
       </a>
     </div>
 
-    <nav class="main-nav">
+    <nav class="main-nav" id="main-nav">
       <ul>
         <li>
-          <a href="#protocol" class="active">PROTOCOL</a>
+          <a href="#protocol" class="nav-link active" data-section="protocol">PROTOCOL</a>
           <div class="nav-hover-square"></div>
         </li>
         <li>
-          <a href="#vaults">VAULTS</a>
+          <a href="#vaults" class="nav-link" data-section="vaults">VAULTS</a>
           <div class="nav-hover-square"></div>
         </li>
         <li>
-          <a href="#staking">STAKING</a>
+          <a href="#staking" class="nav-link" data-section="staking">STAKING</a>
           <div class="nav-hover-square"></div>
         </li>
         <li>
-          <a href="https://docs.cortex.finance" target="_blank">DOCS</a>
+          <a href="#critique" class="nav-link" data-section="critique">MANIFESTO</a>
+          <div class="nav-hover-square"></div>
+        </li>
+        <li>
+          <a href="https://docs.cortex.finance" target="_blank" class="nav-link external">DOCS</a>
           <div class="nav-hover-square"></div>
         </li>
       </ul>
     </nav>
 
-    <div class="contact-link">
-      <a href="https://app.cortex.finance" target="_blank">+LAUNCH APP</a>
+    <div class="header-actions">
+      <button class="sound-toggle" id="soundToggle" aria-label="Toggle sound">
+        <span class="sound-icon on">♪</span>
+        <span class="sound-icon off">♪̸</span>
+      </button>
+      <a href="https://app.cortex.finance" target="_blank" class="launch-btn">
+        <span class="btn-text">LAUNCH APP</span>
+        <span class="btn-arrow">→</span>
+      </a>
     </div>
+  </div>
+  <div class="header-progress">
+    <div class="progress-bar" id="scrollProgress"></div>
   </div>
 </header>
 
@@ -362,10 +376,58 @@
 
 <!-- Gemini Effect Section -->
 <section class="gemini-section" id="gemini-effect">
-  <div class="gemini-content">
+  <!-- ASCII Background -->
+  <div class="gemini-ascii-bg">
+    <pre class="ascii-matrix ascii-pink">░▒▓█ YIELD ░▒▓█ AUTONOMOUS ░▒▓█ PROTOCOL ░▒▓█ SOLANA ░▒▓█ DEFI ░▒▓█ YIELD ░▒▓█ AUTONOMOUS ░▒▓█</pre>
+    <pre class="ascii-matrix ascii-orange">▓▒░ AI AGENTS ▓▒░ TRANSPARENT ▓▒░ ON-CHAIN ▓▒░ REAL YIELD ▓▒░ AI AGENTS ▓▒░ TRANSPARENT ▓▒░</pre>
+    <pre class="ascii-matrix ascii-blue">█▓▒░ CORTEX █▓▒░ AUTONOMOUS █▓▒░ OPTIMIZATION █▓▒░ PROTOCOL █▓▒░ CORTEX █▓▒░ AUTONOMOUS █▓▒░</pre>
+  </div>
+
+  <!-- Header - Sticky at top -->
+  <div class="gemini-header">
+    <div class="gemini-badge">[ ENTER THE PROTOCOL ]</div>
     <h2 class="gemini-title">AI-Powered DeFi</h2>
-    <p class="gemini-description">Multi-model intelligence optimizing yield strategies across Solana protocols</p>
-    <a href="https://app.cortex.finance" class="gemini-cta" target="_blank">LAUNCH APP</a>
+    <p class="gemini-description">Autonomous yield optimization through multi-agent intelligence</p>
+    <div class="gemini-features">
+      <div class="gemini-feature">
+        <span class="gemini-feature-num">01</span>
+        <span class="gemini-feature-text">REAL-TIME ANALYSIS</span>
+      </div>
+      <div class="gemini-feature">
+        <span class="gemini-feature-num">02</span>
+        <span class="gemini-feature-text">AUTO REBALANCING</span>
+      </div>
+      <div class="gemini-feature">
+        <span class="gemini-feature-num">03</span>
+        <span class="gemini-feature-text">RISK-ADJUSTED</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA Button - Centered with animation -->
+  <div class="gemini-cta-wrapper">
+    <a href="https://app.cortex.finance" class="gemini-cta" target="_blank">
+      <span class="cta-text">LAUNCH APP</span>
+      <span class="cta-arrow">→</span>
+    </a>
+  </div>
+
+  <!-- Stats - Bottom -->
+  <div class="gemini-footer">
+    <div class="gemini-stats">
+      <div class="gemini-stat">
+        <span class="gemini-stat-value">24/7</span>
+        <span class="gemini-stat-label">UPTIME</span>
+      </div>
+      <div class="gemini-stat">
+        <span class="gemini-stat-value">&lt;1s</span>
+        <span class="gemini-stat-label">EXECUTION</span>
+      </div>
+      <div class="gemini-stat">
+        <span class="gemini-stat-value">100%</span>
+        <span class="gemini-stat-label">ON-CHAIN</span>
+      </div>
+    </div>
   </div>
   <svg class="gemini-svg" width="1440" height="890" viewBox="0 0 1440 890" xmlns="http://www.w3.org/2000/svg">
     <defs>

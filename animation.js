@@ -211,11 +211,84 @@ function setupSectionScrollSounds() {
 function startAnimations() {
   gsap.registerPlugin(ScrollTrigger);
 
+  // Enhanced Navigation
+  const navLinks = document.querySelectorAll(".nav-link[data-section]");
+  const sections = document.querySelectorAll("section[id]");
+  const header = document.getElementById("site-header");
+  const progressBar = document.getElementById("scrollProgress");
+
+  // Smooth scroll for nav links
+  navLinks.forEach((link) => {
+    link.addEventListener("click", (e) => {
+      const sectionId = link.getAttribute("data-section");
+      const section = document.getElementById(sectionId);
+      if (section) {
+        e.preventDefault();
+        const headerHeight = header ? header.offsetHeight : 0;
+        const targetPosition = section.offsetTop - headerHeight;
+        window.scrollTo({
+          top: targetPosition,
+          behavior: "smooth"
+        });
+      }
+    });
+  });
+
+  // Update active nav on scroll
+  function updateActiveNav() {
+    const scrollY = window.scrollY;
+    const headerHeight = header ? header.offsetHeight : 0;
+
+    // Update progress bar
+    if (progressBar) {
+      const maxScroll = document.body.scrollHeight - window.innerHeight;
+      const progress = (scrollY / maxScroll) * 100;
+      progressBar.style.width = `${Math.min(progress, 100)}%`;
+    }
+
+    // Add scrolled class to header
+    if (header) {
+      if (scrollY > 50) {
+        header.classList.add("scrolled");
+      } else {
+        header.classList.remove("scrolled");
+      }
+    }
+
+    // Find current section
+    let currentSectionId = "";
+    sections.forEach((section) => {
+      const sectionTop = section.offsetTop - headerHeight - 100;
+      const sectionHeight = section.offsetHeight;
+      if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
+        currentSectionId = section.getAttribute("id");
+      }
+    });
+
+    // Update active class
+    navLinks.forEach((link) => {
+      const linkSection = link.getAttribute("data-section");
+      if (linkSection === currentSectionId) {
+        link.classList.add("active");
+      } else {
+        link.classList.remove("active");
+      }
+    });
+  }
+
+  window.addEventListener("scroll", updateActiveNav);
+  updateActiveNav();
+
+  // Hover effects for nav items
   document.querySelectorAll(".main-nav li").forEach((navItem) => {
     const square = navItem.querySelector(".nav-hover-square");
+    const link = navItem.querySelector(".nav-link");
     const hoverSound = document.getElementById("hoverSound");
+
     navItem.addEventListener("mouseenter", () => {
-      gsap.to(square, { scaleX: 1, duration: 0.3, ease: "power2.out" });
+      if (!link.classList.contains("active")) {
+        gsap.to(square, { scaleX: 1, duration: 0.3, ease: "power2.out" });
+      }
       if (hoverSound) {
         hoverSound.currentTime = 0;
         hoverSound.volume = 0.3;
@@ -223,9 +296,26 @@ function startAnimations() {
       }
     });
     navItem.addEventListener("mouseleave", () => {
-      gsap.to(square, { scaleX: 0, duration: 0.2, ease: "power2.in" });
+      if (!link.classList.contains("active")) {
+        gsap.to(square, { scaleX: 0, duration: 0.2, ease: "power2.in" });
+      }
     });
   });
+
+  // Sound toggle
+  const soundToggle = document.getElementById("soundToggle");
+  if (soundToggle) {
+    soundToggle.addEventListener("click", () => {
+      soundToggle.classList.toggle("muted");
+      const isMuted = soundToggle.classList.contains("muted");
+      if (backgroundMusic) {
+        backgroundMusic.muted = isMuted;
+      }
+      [scrollSound1, scrollSound2, scrollSound3].forEach((sound) => {
+        if (sound) sound.muted = isMuted;
+      });
+    });
+  }
 
   const lenis = new Lenis({
     duration: 1.2,
@@ -413,7 +503,7 @@ function setupGeminiEffect() {
   // Initial offsets for staggered animation
   const initialOffsets = [0.8, 0.85, 0.9, 0.95, 1.0];
 
-  paths.forEach((path, index) => {
+  paths.forEach((path) => {
     const length = path.getTotalLength();
     path.style.strokeDasharray = length;
     path.style.strokeDashoffset = length;
@@ -424,10 +514,15 @@ function setupGeminiEffect() {
     const sectionHeight = geminiSection.offsetHeight;
     const viewportHeight = window.innerHeight;
 
+    // Check if section is in view and toggle class
+    const isInView = rect.top < viewportHeight && rect.bottom > 0;
+    if (isInView) {
+      geminiSection.classList.add('in-view');
+    } else {
+      geminiSection.classList.remove('in-view');
+    }
+
     // Calculate progress (0 to 1) based on scroll position
-    const scrollStart = rect.top + viewportHeight;
-    const scrollEnd = rect.bottom;
-    const scrollRange = scrollEnd - scrollStart;
     const scrolled = viewportHeight - rect.top;
     const progress = Math.max(0, Math.min(1, scrolled / (sectionHeight - viewportHeight * 0.5)));
 
