@@ -12,6 +12,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
   <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+  <script src="https://raw.githack.com/strangerintheq/rgba/0.0.8/rgba.js"></script>
 </head>
 <body>
 
@@ -142,6 +143,79 @@
     <div class="content-card">
       <h2 class="section-title">THE PROTOCOL</h2>
       <p class="section-desc">Cortex deploys AI agents that operate with institutional-grade decision-making. Continuously analyzing market conditions across lending protocols, AMMs, and derivatives markets.</p>
+
+      <!-- ML Training Card -->
+      <div class="ml-training-card">
+        <div class="ml-card-header">
+          <span class="ml-status-dot"></span>
+          <span class="ml-status-text">AGENT LEARNING</span>
+          <span class="ml-epoch">EPOCH: <span id="mlEpoch">0</span></span>
+        </div>
+
+        <div class="ml-card-body">
+          <!-- RGBA Shader Animation -->
+          <div class="ml-shader-container" id="mlShaderContainer"></div>
+
+          <!-- Data Feed Overlay -->
+          <div class="ml-data-overlay">
+            <div class="ml-data-row">
+              <span class="ml-label">INPUT</span>
+              <span class="ml-value" id="mlInput">SOL/USDC PRICE DATA</span>
+            </div>
+            <div class="ml-data-row">
+              <span class="ml-label">PROCESSING</span>
+              <span class="ml-value ml-processing" id="mlProcessing">████████░░</span>
+            </div>
+            <div class="ml-data-row">
+              <span class="ml-label">ACCURACY</span>
+              <span class="ml-value ml-accuracy" id="mlAccuracy">87.4%</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="ml-card-footer">
+          <div class="ml-metric">
+            <span class="ml-metric-label">LOSS</span>
+            <span class="ml-metric-value" id="mlLoss">0.0234</span>
+          </div>
+          <div class="ml-metric">
+            <span class="ml-metric-label">LR</span>
+            <span class="ml-metric-value">0.001</span>
+          </div>
+          <div class="ml-metric">
+            <span class="ml-metric-label">BATCH</span>
+            <span class="ml-metric-value" id="mlBatch">32</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tech Stack -->
+      <div class="tech-stack">
+        <span class="tech-label">[ POWERED BY ]</span>
+        <div class="tech-grid">
+          <div class="tech-item">
+            <img src="images/sendaiascii.png" alt="Send AI" class="tech-logo">
+            <div class="tech-info">
+              <span class="tech-name">SOLANA AGENT KIT</span>
+              <span class="tech-desc">by Send AI</span>
+            </div>
+          </div>
+          <div class="tech-item">
+            <img src="images/elizaOSascii.png" alt="ElizaOS" class="tech-logo">
+            <div class="tech-info">
+              <span class="tech-name">ELIZA OS</span>
+              <span class="tech-desc">Agent Framework</span>
+            </div>
+          </div>
+          <div class="tech-item">
+            <img src="images/solanascii.png" alt="Solana" class="tech-logo">
+            <div class="tech-info">
+              <span class="tech-name">SOLANA</span>
+              <span class="tech-desc">L1 Blockchain</span>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <div class="features-grid">
         <div class="feature-item">

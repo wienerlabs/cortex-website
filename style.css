@@ -497,6 +497,230 @@ body::before {
   margin-bottom: 2.5rem;
 }
 
+/* ML Training Card */
+.ml-training-card {
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(68, 255, 136, 0.3);
+  border-radius: 0;
+  margin: 2rem 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.ml-training-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #44ff88, transparent);
+  animation: scanLine 2s linear infinite;
+}
+
+@keyframes scanLine {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.ml-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid rgba(68, 255, 136, 0.2);
+  background: rgba(68, 255, 136, 0.05);
+}
+
+.ml-status-dot {
+  width: 8px;
+  height: 8px;
+  background: #44ff88;
+  border-radius: 50%;
+  animation: pulse 1s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 5px #44ff88; }
+  50% { opacity: 0.5; box-shadow: 0 0 15px #44ff88; }
+}
+
+.ml-status-text {
+  font-family: 'Courier New', monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: #44ff88;
+}
+
+.ml-epoch {
+  margin-left: auto;
+  font-family: 'Courier New', monospace;
+  font-size: 10px;
+  color: rgba(245, 245, 245, 0.5);
+}
+
+.ml-card-body {
+  position: relative;
+  height: 180px;
+  display: flex;
+}
+
+.ml-shader-container {
+  width: 60%;
+  height: 100%;
+  position: relative;
+  border-right: 1px solid rgba(68, 255, 136, 0.2);
+}
+
+.ml-shader-container canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.ml-data-overlay {
+  width: 40%;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.ml-data-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.ml-label {
+  font-family: 'Courier New', monospace;
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  color: rgba(245, 245, 245, 0.4);
+}
+
+.ml-value {
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  color: #fff;
+}
+
+.ml-processing {
+  color: #4FABFF;
+  animation: processBar 1.5s steps(10) infinite;
+}
+
+@keyframes processBar {
+  0% { content: '░░░░░░░░░░'; }
+  100% { content: '██████████'; }
+}
+
+.ml-accuracy {
+  color: #44ff88;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.ml-card-footer {
+  display: flex;
+  justify-content: space-around;
+  padding: 0.75rem 1rem;
+  border-top: 1px solid rgba(68, 255, 136, 0.2);
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.ml-metric {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.ml-metric-label {
+  font-family: 'Courier New', monospace;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  color: rgba(245, 245, 245, 0.4);
+}
+
+.ml-metric-value {
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  color: #FFDDB7;
+}
+
+/* Tech Stack */
+.tech-stack {
+  margin: 2.5rem 0;
+  padding: 1.5rem;
+  border: 1px solid rgba(245, 245, 245, 0.1);
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.tech-label {
+  display: block;
+  font-family: var(--font-primary);
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  color: rgba(245, 245, 245, 0.4);
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.tech-grid {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3rem;
+  flex-wrap: wrap;
+}
+
+.tech-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1.25rem;
+  border: 1px solid rgba(245, 245, 245, 0.1);
+  background: rgba(0, 0, 0, 0.4);
+  transition: all 0.3s ease;
+}
+
+.tech-item:hover {
+  border-color: rgba(68, 255, 136, 0.4);
+  background: rgba(68, 255, 136, 0.05);
+}
+
+.tech-logo {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  filter: grayscale(100%) brightness(1.2);
+  transition: filter 0.3s ease;
+}
+
+.tech-item:hover .tech-logo {
+  filter: grayscale(0%) brightness(1);
+}
+
+.tech-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.tech-name {
+  font-family: var(--font-primary);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  color: #fff;
+}
+
+.tech-desc {
+  font-family: 'Courier New', monospace;
+  font-size: 10px;
+  color: rgba(245, 245, 245, 0.5);
+}
+
 .features-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
