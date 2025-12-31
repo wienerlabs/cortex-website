@@ -1215,7 +1215,7 @@ body::before {
 }
 
 .gemini-section.in-view .gemini-ascii-bg {
-  opacity: 0.1;
+  opacity: 0.15;
 }
 
 /* ASCII Background for Gemini */
@@ -1230,36 +1230,44 @@ body::before {
   pointer-events: none;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: space-between;
+  padding: 1vh 0;
 }
 
-.ascii-matrix {
+.ascii-row {
   font-family: 'Courier New', monospace;
-  font-size: clamp(10px, 1.5vw, 16px);
+  font-size: clamp(11px, 1.4vw, 16px);
   white-space: nowrap;
-  animation: scrollText 20s linear infinite;
-  margin: 2rem 0;
+  margin: 0;
+  line-height: 1;
+  letter-spacing: 0.05em;
+  flex: 1;
+  display: flex;
+  align-items: center;
 }
 
-.ascii-matrix.ascii-pink {
-  color: #FFB7C5;
-  animation-duration: 25s;
-}
+/* Alternating colors and speeds */
+.ascii-row.row-1 { color: #FFB7C5; animation: scrollLeft 35s linear infinite; }
+.ascii-row.row-2 { color: #4FABFF; animation: scrollRight 28s linear infinite; }
+.ascii-row.row-3 { color: #FFDDB7; animation: scrollLeft 32s linear infinite; }
+.ascii-row.row-4 { color: #B1C5FF; animation: scrollRight 25s linear infinite; }
+.ascii-row.row-5 { color: #44ff88; animation: scrollLeft 30s linear infinite; }
+.ascii-row.row-6 { color: #FFB7C5; animation: scrollRight 27s linear infinite; }
+.ascii-row.row-7 { color: #4FABFF; animation: scrollLeft 33s linear infinite; }
+.ascii-row.row-8 { color: #FFDDB7; animation: scrollRight 29s linear infinite; }
+.ascii-row.row-9 { color: #B1C5FF; animation: scrollLeft 26s linear infinite; }
+.ascii-row.row-10 { color: #44ff88; animation: scrollRight 31s linear infinite; }
+.ascii-row.row-11 { color: #FFB7C5; animation: scrollLeft 24s linear infinite; }
+.ascii-row.row-12 { color: #4FABFF; animation: scrollRight 34s linear infinite; }
 
-.ascii-matrix.ascii-orange {
-  color: #FFDDB7;
-  animation-duration: 30s;
-  animation-direction: reverse;
-}
-
-.ascii-matrix.ascii-blue {
-  color: #4FABFF;
-  animation-duration: 22s;
-}
-
-@keyframes scrollText {
+@keyframes scrollLeft {
   0% { transform: translateX(0); }
   100% { transform: translateX(-50%); }
+}
+
+@keyframes scrollRight {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
 }
 
 /* Gemini Header - Top of section */
