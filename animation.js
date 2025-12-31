@@ -473,7 +473,7 @@ function setupEncryptedText() {
       ).join('');
       element.textContent = scrambled;
 
-      // Reveal progressively
+      // Reveal progressively - faster animation (10ms per char, reveal 3 chars at a time)
       const revealInterval = setInterval(() => {
         if (revealCount >= totalChars) {
           clearInterval(revealInterval);
@@ -493,8 +493,8 @@ function setupEncryptedText() {
           }
         }
         element.textContent = result;
-        revealCount++;
-      }, 30);
+        revealCount += 3; // Reveal 3 characters at a time
+      }, 8); // Much faster interval
     });
 
     element.addEventListener('mouseleave', () => {

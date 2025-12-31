@@ -22,9 +22,9 @@ body {
   height: 700vh;
   overflow-x: hidden;
   text-transform: uppercase;
-  font-size: 14px;
+  font-size: 16px;
   color: var(--text-color);
-  line-height: 1.5;
+  line-height: 1.6;
   margin: 0;
   padding: 0;
 }
@@ -250,7 +250,21 @@ body::before {
 }
 
 .section-2 {
-  background-image: url("images/GuSoSAQWgAAzhO3.jpeg");
+  background-image: none;
+}
+
+.section-video-bg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  z-index: 0;
+  pointer-events: none;
 }
 
 .section-3 {
@@ -342,7 +356,7 @@ body::before {
 }
 
 .hero-subtitle {
-  font-size: 11px;
+  font-size: 14px;
   letter-spacing: 0.15em;
   opacity: 0.7;
   margin-top: 0.5rem;
@@ -368,10 +382,10 @@ body::before {
 }
 
 .section-desc {
-  font-size: 15px;
+  font-size: 18px;
   line-height: 1.8;
-  opacity: 0.8;
-  max-width: 650px;
+  opacity: 0.85;
+  max-width: 700px;
   margin-bottom: 2.5rem;
 }
 
@@ -400,16 +414,16 @@ body::before {
 
 .feature-item h3 {
   font-family: var(--font-primary);
-  font-size: 11px;
+  font-size: 14px;
   font-weight: normal;
   letter-spacing: 0.15em;
   margin-bottom: 0.75rem;
 }
 
 .feature-item p {
-  font-size: 13px;
-  line-height: 1.6;
-  opacity: 0.7;
+  font-size: 15px;
+  line-height: 1.7;
+  opacity: 0.75;
 }
 
 .flow-container {
@@ -436,14 +450,14 @@ body::before {
 
 .flow-step h3 {
   font-family: var(--font-primary);
-  font-size: 11px;
+  font-size: 14px;
   font-weight: normal;
   letter-spacing: 0.15em;
   margin-bottom: 0.75rem;
 }
 
 .flow-step p {
-  font-size: 10px;
+  font-size: 14px;
   line-height: 1.6;
   opacity: 0.7;
 }
@@ -555,7 +569,7 @@ body::before {
 }
 
 .ai-card-desc {
-  font-size: 12px;
+  font-size: 14px;
   line-height: 1.6;
   color: rgba(245, 245, 245, 0.6);
   margin: 0;
@@ -618,7 +632,7 @@ body::before {
 
 .critique-label {
   font-family: var(--font-primary);
-  font-size: 12px;
+  font-size: 14px;
   letter-spacing: 0.3em;
   color: #ff4444;
   opacity: 0.8;
@@ -672,7 +686,7 @@ body::before {
 
 .counter-label {
   font-family: var(--font-primary);
-  font-size: 11px;
+  font-size: 13px;
   letter-spacing: 0.3em;
   color: #44ff88;
   display: block;
@@ -715,9 +729,158 @@ body::before {
 }
 
 .stat-label {
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 0.2em;
   color: rgba(245, 245, 245, 0.5);
+}
+
+/* Critique Enhanced Styles */
+.critique-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.glitch-text {
+  font-family: var(--font-primary);
+  font-size: clamp(28px, 5vw, 48px);
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  color: #ff4444;
+  position: relative;
+  animation: glitch 2s infinite;
+}
+
+.glitch-text::before,
+.glitch-text::after {
+  content: attr(data-text);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.glitch-text::before {
+  animation: glitch-1 0.3s infinite;
+  color: #ff0000;
+  z-index: -1;
+}
+
+.glitch-text::after {
+  animation: glitch-2 0.3s infinite;
+  color: #00ffff;
+  z-index: -2;
+}
+
+.glitch-green {
+  color: #44ff88;
+}
+
+.glitch-green::before {
+  color: #00ff44;
+}
+
+.glitch-green::after {
+  color: #44ffaa;
+}
+
+@keyframes glitch {
+  0%, 90%, 100% { opacity: 1; }
+  91% { opacity: 0.8; }
+  92% { opacity: 1; }
+  93% { opacity: 0.9; }
+}
+
+@keyframes glitch-1 {
+  0% { clip-path: inset(20% 0 30% 0); transform: translateX(-3px); }
+  50% { clip-path: inset(50% 0 20% 0); transform: translateX(3px); }
+  100% { clip-path: inset(20% 0 30% 0); transform: translateX(-3px); }
+}
+
+@keyframes glitch-2 {
+  0% { clip-path: inset(60% 0 10% 0); transform: translateX(3px); }
+  50% { clip-path: inset(10% 0 60% 0); transform: translateX(-3px); }
+  100% { clip-path: inset(60% 0 10% 0); transform: translateX(3px); }
+}
+
+.label-green {
+  color: #44ff88 !important;
+}
+
+.critique-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+.critique-card {
+  background: rgba(255, 68, 68, 0.05);
+  border: 1px solid rgba(255, 68, 68, 0.2);
+  padding: 2rem;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.critique-card:hover {
+  background: rgba(255, 68, 68, 0.1);
+  border-color: rgba(255, 68, 68, 0.4);
+  transform: translateY(-5px);
+}
+
+.critique-icon {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.critique-card-title {
+  font-family: var(--font-primary);
+  font-size: 14px;
+  letter-spacing: 0.2em;
+  color: #ff4444;
+  margin-bottom: 1rem;
+}
+
+.critique-card-text {
+  font-size: 14px;
+  line-height: 1.7;
+  color: rgba(245, 245, 245, 0.7);
+  margin-bottom: 1rem;
+}
+
+.critique-tag {
+  font-family: var(--font-primary);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  padding: 0.3rem 0.8rem;
+  display: inline-block;
+}
+
+.tag-red {
+  background: rgba(255, 68, 68, 0.2);
+  color: #ff4444;
+  border: 1px solid rgba(255, 68, 68, 0.3);
+}
+
+.critique-quote {
+  text-align: center;
+  margin: 3rem 0;
+}
+
+.critique-quote blockquote {
+  font-size: clamp(18px, 3vw, 28px);
+  font-style: italic;
+  color: rgba(245, 245, 245, 0.6);
+  border-left: 3px solid #ff4444;
+  padding-left: 2rem;
+  margin: 0 auto;
+  max-width: 600px;
+  text-align: left;
+}
+
+.critique-solution {
+  text-align: center;
+  margin: 2rem 0;
 }
 
 @media (max-width: 768px) {
@@ -728,6 +891,188 @@ body::before {
 
   .critique-content {
     padding: 3rem 1.5rem;
+  }
+}
+
+/* Critique Part 2 */
+.critique-part-2 {
+  border-top: 1px solid rgba(68, 255, 136, 0.2);
+}
+
+.critique-bg-2 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('images/ascii-animation.gif');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.15;
+  z-index: 1;
+  filter: hue-rotate(120deg);
+}
+
+.divider-green {
+  background: linear-gradient(to right, #44ff88, transparent);
+}
+
+.philosophy-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+.philosophy-card {
+  background: rgba(68, 255, 136, 0.05);
+  border: 1px solid rgba(68, 255, 136, 0.2);
+  padding: 2rem;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.philosophy-card:hover {
+  background: rgba(68, 255, 136, 0.1);
+  border-color: rgba(68, 255, 136, 0.4);
+  transform: translateY(-5px);
+}
+
+.philosophy-number {
+  font-family: var(--font-primary);
+  font-size: 36px;
+  color: rgba(68, 255, 136, 0.3);
+  margin-bottom: 1rem;
+}
+
+.philosophy-card h3 {
+  font-family: var(--font-primary);
+  font-size: 14px;
+  letter-spacing: 0.2em;
+  color: #44ff88;
+  margin-bottom: 1rem;
+}
+
+.philosophy-card p {
+  font-size: 14px;
+  line-height: 1.7;
+  color: rgba(245, 245, 245, 0.7);
+}
+
+.manifesto-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: center;
+  margin-top: 3rem;
+}
+
+.manifesto-text {
+  font-size: clamp(16px, 2vw, 20px);
+  color: rgba(245, 245, 245, 0.8);
+  line-height: 1.8;
+  font-style: italic;
+  margin-bottom: 1rem;
+}
+
+.manifesto-subtext {
+  font-size: 14px;
+  color: #44ff88;
+}
+
+.terminal-window {
+  background: #0a0a0a;
+  border: 1px solid rgba(68, 255, 136, 0.3);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.terminal-header {
+  background: #1a1a1a;
+  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.terminal-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.terminal-dot.red { background: #ff5f56; }
+.terminal-dot.yellow { background: #ffbd2e; }
+.terminal-dot.green { background: #27ca40; }
+
+.terminal-title {
+  font-family: 'Courier New', monospace;
+  font-size: 11px;
+  color: rgba(245, 245, 245, 0.5);
+  margin-left: auto;
+}
+
+.terminal-body {
+  padding: 1.5rem;
+  font-family: 'Courier New', monospace;
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.code-comment { color: #6a9955; }
+.code-keyword { color: #569cd6; }
+.code-function { color: #dcdcaa; }
+
+@media (max-width: 768px) {
+  .manifesto-section {
+    grid-template-columns: 1fr;
+  }
+
+  .critique-grid,
+  .philosophy-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.ascii-philosophy {
+  margin-top: 3rem;
+  text-align: center;
+}
+
+.philosophy-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.ascii-art {
+  font-family: 'Courier New', monospace;
+  font-size: clamp(8px, 1.5vw, 14px);
+  color: #44ff88;
+  line-height: 1.2;
+  text-align: left;
+  margin: 0;
+  white-space: pre;
+  text-shadow: 0 0 10px rgba(68, 255, 136, 0.5);
+}
+
+.philosophy-text {
+  font-family: var(--font-primary);
+  font-size: clamp(16px, 3vw, 24px);
+  color: rgba(245, 245, 245, 0.6);
+  letter-spacing: 0.3em;
+  margin: 1rem 0;
+}
+
+@media (max-width: 768px) {
+  .ascii-art {
+    font-size: 6px;
+  }
+
+  .philosophy-text {
+    font-size: 14px;
   }
 }
 
@@ -845,7 +1190,7 @@ body::before {
 }
 
 .tier-badge {
-  font-size: 12px;
+  font-size: 14px;
   letter-spacing: 0.2em;
   display: block;
   margin-bottom: 1rem;
@@ -857,7 +1202,7 @@ body::before {
 .tier-platinum .tier-badge { color: #e5e4e2; }
 
 .tier-item p {
-  font-size: 10px;
+  font-size: 14px;
   line-height: 1.6;
   opacity: 0.7;
 }
@@ -947,7 +1292,7 @@ body::before {
 
 .footer-credits {
   font-family: var(--font-primary);
-  font-size: 10px;
+  font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 0.7em;
   color: rgba(245, 245, 245, 0.6);
@@ -974,7 +1319,7 @@ body::before {
 .footer-social a {
   color: var(--text-color);
   text-decoration: none;
-  font-size: 10px;
+  font-size: 13px;
   letter-spacing: 0.15em;
   transition: opacity 0.3s ease;
 }
