@@ -602,197 +602,415 @@ function setupEncryptedText() {
   });
 }
 
-// ML Training Card Animation
+// ML Training Card Animation - Advanced
 function setupMLTrainingCard() {
-  const container = document.getElementById('mlShaderContainer');
   const epochEl = document.getElementById('mlEpoch');
   const accuracyEl = document.getElementById('mlAccuracy');
   const lossEl = document.getElementById('mlLoss');
-  const processingEl = document.getElementById('mlProcessing');
-  const inputEl = document.getElementById('mlInput');
+  const lrEl = document.getElementById('mlLR');
+  const batchEl = document.getElementById('mlBatch');
+  const currentDataEl = document.getElementById('currentData');
+  const consoleEl = document.getElementById('mlConsole');
+  const progressEl = document.getElementById('mlProgress');
+  const lossCanvas = document.getElementById('lossCanvas');
+  const connectionsGroup = document.getElementById('nnConnections');
 
-  if (!container) return;
+  if (!epochEl) return;
 
-  // Initialize RGBA shader
-  if (typeof RGBA !== 'undefined') {
-    try {
-      RGBA(`
-        vec4 permute(vec4 x){return mod(((x*34.0)+1.0)*x, 289.0);}
-        vec4 taylorInvSqrt(vec4 r){return 1.79284291400159 - 0.85373472095314 * r;}
-        vec4 fade(vec4 t) {return t*t*t*(t*(t*6.0-15.0)+10.0);}
+  // Connection mapping for proper flow animation
+  const connectionMap = {
+    inputToHidden1: [],
+    hidden1ToHidden2: [],
+    hidden2ToOutput: []
+  };
 
-        float cnoise(vec4 P){
-          vec4 Pi0 = floor(P);
-          vec4 Pi1 = Pi0 + 1.0;
-          Pi0 = mod(Pi0, 289.0);
-          Pi1 = mod(Pi1, 289.0);
-          vec4 Pf0 = fract(P);
-          vec4 Pf1 = Pf0 - 1.0;
-          vec4 ix = vec4(Pi0.x, Pi1.x, Pi0.x, Pi1.x);
-          vec4 iy = vec4(Pi0.yy, Pi1.yy);
-          vec4 iz0 = vec4(Pi0.zzzz);
-          vec4 iz1 = vec4(Pi1.zzzz);
-          vec4 iw0 = vec4(Pi0.wwww);
-          vec4 iw1 = vec4(Pi1.wwww);
-          vec4 ixy = permute(permute(ix) + iy);
-          vec4 ixy0 = permute(ixy + iz0);
-          vec4 ixy1 = permute(ixy + iz1);
-          vec4 ixy00 = permute(ixy0 + iw0);
-          vec4 ixy01 = permute(ixy0 + iw1);
-          vec4 ixy10 = permute(ixy1 + iw0);
-          vec4 ixy11 = permute(ixy1 + iw1);
-          vec4 gx00 = ixy00 / 7.0;
-          vec4 gy00 = floor(gx00) / 7.0;
-          vec4 gz00 = floor(gy00) / 6.0;
-          gx00 = fract(gx00) - 0.5;
-          gy00 = fract(gy00) - 0.5;
-          gz00 = fract(gz00) - 0.5;
-          vec4 gw00 = vec4(0.75) - abs(gx00) - abs(gy00) - abs(gz00);
-          vec4 sw00 = step(gw00, vec4(0.0));
-          gx00 -= sw00 * (step(0.0, gx00) - 0.5);
-          gy00 -= sw00 * (step(0.0, gy00) - 0.5);
-          vec4 gx01 = ixy01 / 7.0;
-          vec4 gy01 = floor(gx01) / 7.0;
-          vec4 gz01 = floor(gy01) / 6.0;
-          gx01 = fract(gx01) - 0.5;
-          gy01 = fract(gy01) - 0.5;
-          gz01 = fract(gz01) - 0.5;
-          vec4 gw01 = vec4(0.75) - abs(gx01) - abs(gy01) - abs(gz01);
-          vec4 sw01 = step(gw01, vec4(0.0));
-          gx01 -= sw01 * (step(0.0, gx01) - 0.5);
-          gy01 -= sw01 * (step(0.0, gy01) - 0.5);
-          vec4 gx10 = ixy10 / 7.0;
-          vec4 gy10 = floor(gx10) / 7.0;
-          vec4 gz10 = floor(gy10) / 6.0;
-          gx10 = fract(gx10) - 0.5;
-          gy10 = fract(gy10) - 0.5;
-          gz10 = fract(gz10) - 0.5;
-          vec4 gw10 = vec4(0.75) - abs(gx10) - abs(gy10) - abs(gz10);
-          vec4 sw10 = step(gw10, vec4(0.0));
-          gx10 -= sw10 * (step(0.0, gx10) - 0.5);
-          gy10 -= sw10 * (step(0.0, gy10) - 0.5);
-          vec4 gx11 = ixy11 / 7.0;
-          vec4 gy11 = floor(gx11) / 7.0;
-          vec4 gz11 = floor(gy11) / 6.0;
-          gx11 = fract(gx11) - 0.5;
-          gy11 = fract(gy11) - 0.5;
-          gz11 = fract(gz11) - 0.5;
-          vec4 gw11 = vec4(0.75) - abs(gx11) - abs(gy11) - abs(gz11);
-          vec4 sw11 = step(gw11, vec4(0.0));
-          gx11 -= sw11 * (step(0.0, gx11) - 0.5);
-          gy11 -= sw11 * (step(0.0, gy11) - 0.5);
-          vec4 g0000 = vec4(gx00.x,gy00.x,gz00.x,gw00.x);
-          vec4 g1000 = vec4(gx00.y,gy00.y,gz00.y,gw00.y);
-          vec4 g0100 = vec4(gx00.z,gy00.z,gz00.z,gw00.z);
-          vec4 g1100 = vec4(gx00.w,gy00.w,gz00.w,gw00.w);
-          vec4 g0010 = vec4(gx10.x,gy10.x,gz10.x,gw10.x);
-          vec4 g1010 = vec4(gx10.y,gy10.y,gz10.y,gw10.y);
-          vec4 g0110 = vec4(gx10.z,gy10.z,gz10.z,gw10.z);
-          vec4 g1110 = vec4(gx10.w,gy10.w,gz10.w,gw10.w);
-          vec4 g0001 = vec4(gx01.x,gy01.x,gz01.x,gw01.x);
-          vec4 g1001 = vec4(gx01.y,gy01.y,gz01.y,gw01.y);
-          vec4 g0101 = vec4(gx01.z,gy01.z,gz01.z,gw01.z);
-          vec4 g1101 = vec4(gx01.w,gy01.w,gz01.w,gw01.w);
-          vec4 g0011 = vec4(gx11.x,gy11.x,gz11.x,gw11.x);
-          vec4 g1011 = vec4(gx11.y,gy11.y,gz11.y,gw11.y);
-          vec4 g0111 = vec4(gx11.z,gy11.z,gz11.z,gw11.z);
-          vec4 g1111 = vec4(gx11.w,gy11.w,gz11.w,gw11.w);
-          vec4 norm00 = taylorInvSqrt(vec4(dot(g0000, g0000), dot(g0100, g0100), dot(g1000, g1000), dot(g1100, g1100)));
-          g0000 *= norm00.x; g0100 *= norm00.y; g1000 *= norm00.z; g1100 *= norm00.w;
-          vec4 norm01 = taylorInvSqrt(vec4(dot(g0001, g0001), dot(g0101, g0101), dot(g1001, g1001), dot(g1101, g1101)));
-          g0001 *= norm01.x; g0101 *= norm01.y; g1001 *= norm01.z; g1101 *= norm01.w;
-          vec4 norm10 = taylorInvSqrt(vec4(dot(g0010, g0010), dot(g0110, g0110), dot(g1010, g1010), dot(g1110, g1110)));
-          g0010 *= norm10.x; g0110 *= norm10.y; g1010 *= norm10.z; g1110 *= norm10.w;
-          vec4 norm11 = taylorInvSqrt(vec4(dot(g0011, g0011), dot(g0111, g0111), dot(g1011, g1011), dot(g1111, g1111)));
-          g0011 *= norm11.x; g0111 *= norm11.y; g1011 *= norm11.z; g1111 *= norm11.w;
-          float n0000 = dot(g0000, Pf0);
-          float n1000 = dot(g1000, vec4(Pf1.x, Pf0.yzw));
-          float n0100 = dot(g0100, vec4(Pf0.x, Pf1.y, Pf0.zw));
-          float n1100 = dot(g1100, vec4(Pf1.xy, Pf0.zw));
-          float n0010 = dot(g0010, vec4(Pf0.xy, Pf1.z, Pf0.w));
-          float n1010 = dot(g1010, vec4(Pf1.x, Pf0.y, Pf1.z, Pf0.w));
-          float n0110 = dot(g0110, vec4(Pf0.x, Pf1.yz, Pf0.w));
-          float n1110 = dot(g1110, vec4(Pf1.xyz, Pf0.w));
-          float n0001 = dot(g0001, vec4(Pf0.xyz, Pf1.w));
-          float n1001 = dot(g1001, vec4(Pf1.x, Pf0.yz, Pf1.w));
-          float n0101 = dot(g0101, vec4(Pf0.x, Pf1.y, Pf0.z, Pf1.w));
-          float n1101 = dot(g1101, vec4(Pf1.xy, Pf0.z, Pf1.w));
-          float n0011 = dot(g0011, vec4(Pf0.xy, Pf1.zw));
-          float n1011 = dot(g1011, vec4(Pf1.x, Pf0.y, Pf1.zw));
-          float n0111 = dot(g0111, vec4(Pf0.x, Pf1.yzw));
-          float n1111 = dot(g1111, Pf1);
-          vec4 fade_xyzw = fade(Pf0);
-          vec4 n_0w = mix(vec4(n0000, n1000, n0100, n1100), vec4(n0001, n1001, n0101, n1101), fade_xyzw.w);
-          vec4 n_1w = mix(vec4(n0010, n1010, n0110, n1110), vec4(n0011, n1011, n0111, n1111), fade_xyzw.w);
-          vec4 n_zw = mix(n_0w, n_1w, fade_xyzw.z);
-          vec2 n_yzw = mix(n_zw.xy, n_zw.zw, fade_xyzw.y);
-          float n_xyzw = mix(n_yzw.x, n_yzw.y, fade_xyzw.x);
-          return 2.2 * n_xyzw;
-        }
+  // Draw neural network connections with IDs
+  function drawConnections() {
+    if (!connectionsGroup) return;
+    let svg = '';
+    let connId = 0;
 
-        vec2 grid(vec2 uv) { return floor(uv * 25.) * 0.04; }
-        float dots(vec2 uv) {
-          float mx = mod(uv.x, 0.04);
-          float my = mod(uv.y, 0.04);
-          return step(0.027, max(mx, my));
-        }
-
-        void main() {
-          vec2 uv = gl_FragCoord.xy / resolution.xy*2.-1.;
-          uv.y *= resolution.y/resolution.x;
-          uv.x += time * 0.5;
-          float n = cnoise(vec4(10.0 * grid(uv), 10.0 * grid(uv).x, time)) * 0.5 + 0.5;
-          float n2 = cnoise(vec4(grid(uv), 10.0 * grid(uv).x, time)) * 0.5 + 0.5;
-          float t = (sin(uv.x) * 0.5 + 0.5);
-          vec3 fgColor = mix(vec3(0.08, 0.11, 0.14), vec3(0.27, 1.0, 0.53), pow((n + (1. - n2)) * 0.5, mix(0.1, 5., t)));
-          vec3 bgColor = vec3(0.02, 0.03, 0.04);
-          vec3 color = bgColor;
-          if (distance(0.0, uv.y) < 0.12) { color = mix(vec3(0.08, 0.11, 0.14), bgColor, dots(uv)); }
-          if (distance(0.0, uv.y) < (floor(t * n * 7.) * 0.04)) { color = mix(fgColor, bgColor, dots(uv)); }
-          if (distance((1. - n2) - 0.5, uv.y) < 0.1) { color = mix(fgColor, bgColor, dots(uv)); }
-          gl_FragColor = vec4(color, 1.);
-        }
-      `, container);
-    } catch (e) {
-      console.log('RGBA shader initialization skipped');
+    // Input (6 nodes) to Hidden1 (5 nodes)
+    for (let i = 0; i < 6; i++) {
+      for (let j = 0; j < 5; j++) {
+        const x1 = 40, y1 = 30 + i * 30;
+        const x2 = 110, y2 = 40 + j * 35;
+        svg += `<line class="nn-connection" id="conn-0-${connId}" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"/>`;
+        connectionMap.inputToHidden1.push(`conn-0-${connId}`);
+        connId++;
+      }
     }
+
+    connId = 0;
+    // Hidden1 (5 nodes) to Hidden2 (4 nodes)
+    for (let i = 0; i < 5; i++) {
+      for (let j = 0; j < 4; j++) {
+        const x1 = 110, y1 = 40 + i * 35;
+        const x2 = 180, y2 = 55 + j * 40;
+        svg += `<line class="nn-connection" id="conn-1-${connId}" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"/>`;
+        connectionMap.hidden1ToHidden2.push(`conn-1-${connId}`);
+        connId++;
+      }
+    }
+
+    connId = 0;
+    // Hidden2 (4 nodes) to Output (2 nodes)
+    for (let i = 0; i < 4; i++) {
+      for (let j = 0; j < 2; j++) {
+        const x1 = 180, y1 = 55 + i * 40;
+        const x2 = 250, y2 = 85 + j * 50;
+        svg += `<line class="nn-connection" id="conn-2-${connId}" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"/>`;
+        connectionMap.hidden2ToOutput.push(`conn-2-${connId}`);
+        connId++;
+      }
+    }
+
+    connectionsGroup.innerHTML = svg;
   }
 
-  // ML Training data simulation
-  const dataInputs = [
-    'SOL/USDC PRICE DATA',
-    'LENDING RATES KAMINO',
-    'LP POSITIONS ORCA',
-    'DRIFT PERP FUNDING',
-    'MARGINFI UTILIZATION',
-    'JUPITER ROUTES',
-    'METEORA POOLS',
-    'RAYDIUM VOLUME'
+  drawConnections();
+
+  // Proper sequential forward pass animation
+  let isAnimating = false;
+
+  function animateForwardPass() {
+    if (isAnimating) return;
+    isAnimating = true;
+
+    const layers = [
+      Array.from(document.querySelectorAll('.input-layer .nn-node')),
+      Array.from(document.querySelectorAll('.hidden-layer-1 .nn-node')),
+      Array.from(document.querySelectorAll('.hidden-layer-2 .nn-node')),
+      Array.from(document.querySelectorAll('.output-layer .nn-node'))
+    ];
+
+    const connectionGroups = [
+      connectionMap.inputToHidden1,
+      connectionMap.hidden1ToHidden2,
+      connectionMap.hidden2ToOutput
+    ];
+
+    // Step 1: Activate input layer
+    setTimeout(() => {
+      layers[0].forEach(n => n.classList.add('active'));
+    }, 0);
+
+    // Step 2: Signal flows to hidden1
+    setTimeout(() => {
+      connectionGroups[0].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.add('active');
+      });
+    }, 150);
+
+    // Step 3: Deactivate input, activate hidden1
+    setTimeout(() => {
+      layers[0].forEach(n => n.classList.remove('active'));
+      connectionGroups[0].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.remove('active');
+      });
+      layers[1].forEach(n => n.classList.add('active'));
+    }, 350);
+
+    // Step 4: Signal flows to hidden2
+    setTimeout(() => {
+      connectionGroups[1].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.add('active');
+      });
+    }, 500);
+
+    // Step 5: Deactivate hidden1, activate hidden2
+    setTimeout(() => {
+      layers[1].forEach(n => n.classList.remove('active'));
+      connectionGroups[1].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.remove('active');
+      });
+      layers[2].forEach(n => n.classList.add('active'));
+    }, 700);
+
+    // Step 6: Signal flows to output
+    setTimeout(() => {
+      connectionGroups[2].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.add('active');
+      });
+    }, 850);
+
+    // Step 7: Deactivate hidden2, activate output
+    setTimeout(() => {
+      layers[2].forEach(n => n.classList.remove('active'));
+      connectionGroups[2].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.remove('active');
+      });
+      layers[3].forEach(n => n.classList.add('active'));
+    }, 1050);
+
+    // Step 8: Flash output and reset
+    setTimeout(() => {
+      layers[3].forEach(n => n.classList.remove('active'));
+      isAnimating = false;
+    }, 1400);
+  }
+
+  // Loss graph
+  const lossHistory = [];
+  const maxHistory = 50;
+
+  function drawLossGraph() {
+    if (!lossCanvas) return;
+    const ctx = lossCanvas.getContext('2d');
+    const width = lossCanvas.width;
+    const height = lossCanvas.height;
+
+    ctx.clearRect(0, 0, width, height);
+
+    // Grid
+    ctx.strokeStyle = 'rgba(68, 255, 136, 0.1)';
+    ctx.lineWidth = 1;
+    for (let i = 0; i < 5; i++) {
+      const y = (height / 5) * i;
+      ctx.beginPath();
+      ctx.moveTo(0, y);
+      ctx.lineTo(width, y);
+      ctx.stroke();
+    }
+
+    if (lossHistory.length < 2) return;
+
+    // Loss line
+    ctx.strokeStyle = '#44ff88';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+
+    const maxLoss = Math.max(...lossHistory, 0.5);
+    lossHistory.forEach((lossVal, i) => {
+      const x = (i / (maxHistory - 1)) * width;
+      const y = height - (lossVal / maxLoss) * height * 0.9;
+      if (i === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    });
+    ctx.stroke();
+
+    ctx.shadowColor = '#44ff88';
+    ctx.shadowBlur = 10;
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+  }
+
+  // Console - sequential log messages (no duplicates)
+  let logIndex = 0;
+  const logSequence = [
+    '[INIT] Loading CORTEX Agent v2.1...',
+    '[LOAD] Initializing neural network weights',
+    '[DATA] Connecting to Solana RPC endpoint',
+    '[DATA] Fetching SOL/USDC price: $98.42',
+    '[TRAIN] Forward pass → 6→5→4→2 nodes',
+    '[TRAIN] Computing cross-entropy loss',
+    '[OPTIM] Backpropagation started',
+    '[OPTIM] Gradient descent (Adam β1=0.9)',
+    '[DATA] Kamino lending APY: 12.4%',
+    '[TRAIN] Weights updated successfully',
+    '[EVAL] Validation loss: {loss}',
+    '[DATA] Drift perp funding: +0.021%',
+    '[TRAIN] Epoch {epoch} complete',
+    '[SAVE] Model checkpoint saved',
+    '[DATA] Orca SOL/USDC pool TVL: $2.4M',
+    '[OPTIM] Learning rate: {lr}',
+    '[DATA] Jupiter routing: 3 hops optimal',
+    '[TRAIN] Batch size: {batch}',
+    '[EVAL] Accuracy improved to {accuracy}%',
+    '[DATA] Marginfi utilization: 78%',
+    '[TRAIN] Gradient norm: 0.0042',
+    '[DATA] Meteora DLMM bin: 142',
+    '[INFO] GPU memory: 847MB / 4096MB',
+    '[DATA] Raydium CLMM tick: 95-105',
+    '[TRAIN] Loss decreased by {delta}%',
+    '[SYNC] Model synced to chain'
   ];
 
-  let epoch = 0;
-  let accuracy = 75.0;
-  let loss = 0.15;
+  function addConsoleLog(state) {
+    if (!consoleEl) return;
 
-  function updateMLMetrics() {
-    epoch++;
-    accuracy = Math.min(99.9, accuracy + (Math.random() * 0.5 - 0.1));
-    loss = Math.max(0.001, loss - (Math.random() * 0.005));
+    const template = logSequence[logIndex % logSequence.length];
+    logIndex++;
 
-    if (epochEl) epochEl.textContent = epoch;
-    if (accuracyEl) accuracyEl.textContent = accuracy.toFixed(1) + '%';
-    if (lossEl) lossEl.textContent = loss.toFixed(4);
-    if (inputEl) inputEl.textContent = dataInputs[epoch % dataInputs.length];
+    const msg = template
+      .replace('{accuracy}', state.accuracy.toFixed(1))
+      .replace('{epoch}', state.epoch)
+      .replace('{loss}', state.loss.toFixed(4))
+      .replace('{lr}', state.lr.toFixed(6))
+      .replace('{batch}', state.batch)
+      .replace('{delta}', (Math.random() * 1.5 + 0.1).toFixed(2));
 
-    // Update processing bar
-    if (processingEl) {
-      const progress = Math.floor(Math.random() * 5) + 5;
-      const bar = '█'.repeat(progress) + '░'.repeat(10 - progress);
-      processingEl.textContent = bar;
+    const line = document.createElement('div');
+    line.className = 'console-line';
+    line.textContent = msg;
+    consoleEl.appendChild(line);
+
+    // Keep only last 3 lines for readability
+    while (consoleEl.children.length > 3) {
+      consoleEl.removeChild(consoleEl.firstChild);
     }
   }
 
-  setInterval(updateMLMetrics, 800);
+  // Real DeFi data sources with realistic values
+  const dataFeeds = [
+    { name: 'SOL_PRICE', value: () => `$${(95 + Math.random() * 10).toFixed(2)}` },
+    { name: 'KAMINO_APY', value: () => `${(8 + Math.random() * 6).toFixed(1)}%` },
+    { name: 'ORCA_TVL', value: () => `$${(1.8 + Math.random() * 1.2).toFixed(1)}M` },
+    { name: 'DRIFT_FUNDING', value: () => `${(Math.random() > 0.5 ? '+' : '-')}${(Math.random() * 0.05).toFixed(3)}%` },
+    { name: 'MARGINFI_UTIL', value: () => `${(65 + Math.random() * 25).toFixed(0)}%` },
+    { name: 'JUP_ROUTES', value: () => `${Math.floor(2 + Math.random() * 4)} hops` },
+    { name: 'METEORA_BIN', value: () => `#${Math.floor(100 + Math.random() * 100)}` },
+    { name: 'RAY_VOLUME', value: () => `$${(0.5 + Math.random() * 2).toFixed(1)}M` }
+  ];
+
+  // Training state
+  let epoch = 0;
+  let accuracy = 68.0;
+  let loss = 0.42;
+  let batch = 64;
+  let lr = 0.001;
+  const totalEpochs = 500;
+
+  function updateTraining() {
+    epoch++;
+
+    // Reset at totalEpochs for continuous loop
+    if (epoch > totalEpochs) {
+      epoch = 1;
+      accuracy = 68.0;
+      loss = 0.42;
+      lr = 0.001;
+      lossHistory.length = 0;
+    }
+
+    const progress = epoch / totalEpochs;
+    const noise = (Math.random() - 0.5) * 0.015;
+
+    // Realistic exponential decay for loss
+    loss = Math.max(0.008, 0.42 * Math.exp(-4 * progress) + noise);
+
+    // Accuracy with plateau effect
+    accuracy = Math.min(98.7, 68 + 30 * (1 - Math.exp(-5 * progress)) + noise * 8);
+
+    // Learning rate decay
+    lr = 0.001 * Math.pow(0.995, epoch);
+
+    // Batch size varies
+    batch = [32, 64, 64, 128][epoch % 4];
+
+    // Update UI
+    epochEl.textContent = epoch;
+    if (accuracyEl) accuracyEl.textContent = accuracy.toFixed(1) + '%';
+    if (lossEl) lossEl.textContent = loss.toFixed(4);
+    if (lrEl) lrEl.textContent = lr.toFixed(6);
+    if (batchEl) batchEl.textContent = batch;
+
+    // Update current data feed
+    if (currentDataEl) {
+      const feed = dataFeeds[epoch % dataFeeds.length];
+      currentDataEl.textContent = `${feed.name}: ${feed.value()}`;
+    }
+
+    // Progress bar (resets every 50 epochs)
+    if (progressEl) {
+      progressEl.style.width = ((epoch % 50) / 50 * 100) + '%';
+    }
+
+    // Update loss graph
+    lossHistory.push(loss);
+    if (lossHistory.length > maxHistory) lossHistory.shift();
+    drawLossGraph();
+
+    // Animate neural network every 3 epochs
+    if (epoch % 3 === 0) animateForwardPass();
+
+    // Add console log every 2 epochs
+    if (epoch % 2 === 0) {
+      addConsoleLog({ epoch, accuracy, loss, lr, batch });
+    }
+  }
+
+  // Initial setup
+  consoleEl.innerHTML = '';
+  addConsoleLog({ epoch: 0, accuracy, loss, lr, batch });
+
+  // Start training loop (slower for readability)
+  setInterval(updateTraining, 800);
+}
+
+// Real-time Data Stream
+function setupDataStream() {
+  const dataStreamEl = document.getElementById('dataStream');
+  if (!dataStreamEl) return;
+
+  // Cached real data (updated periodically)
+  let realData = {
+    solPrice: 98.50,
+    solChange: 2.3,
+    solVolume: 2.4,
+    lastUpdate: 0
+  };
+
+  // Fetch real SOL price from CoinGecko (free, no API key needed)
+  async function fetchRealData() {
+    try {
+      const response = await fetch(
+        'https://api.coingecko.com/api/v3/simple/price?ids=solana&vs_currencies=usd&include_24hr_vol=true&include_24hr_change=true',
+        { cache: 'no-store' }
+      );
+      const data = await response.json();
+      if (data.solana) {
+        realData.solPrice = data.solana.usd;
+        realData.solChange = data.solana.usd_24h_change || 0;
+        realData.solVolume = (data.solana.usd_24h_vol / 1000000000).toFixed(1);
+        realData.lastUpdate = Date.now();
+      }
+    } catch (e) {
+      // Fallback to simulated data on error
+    }
+  }
+
+  // Data line templates using real + simulated DeFi data
+  function generateDataLines() {
+    const price = realData.solPrice.toFixed(2);
+    const change = realData.solChange >= 0 ? `+${realData.solChange.toFixed(1)}` : realData.solChange.toFixed(1);
+    const vol = realData.solVolume;
+
+    return [
+      `SOL/USDC $${price} ▸ VOL 24h: $${vol}B ▸ CHG: ${change}%`,
+      `KAMINO kSOL APY: ${(10 + Math.random() * 5).toFixed(1)}% ▸ TVL: $${(800 + Math.random() * 200).toFixed(0)}M ▸ UTIL: ${(75 + Math.random() * 15).toFixed(0)}%`,
+      `DRIFT SOL-PERP FUNDING: ${Math.random() > 0.5 ? '+' : '-'}${(Math.random() * 0.03).toFixed(3)}% ▸ OI: $${(10 + Math.random() * 8).toFixed(1)}M`,
+      `MARGINFI LEND: ${(8 + Math.random() * 4).toFixed(1)}% ▸ BORROW: ${(12 + Math.random() * 6).toFixed(1)}% ▸ POOL: $${(400 + Math.random() * 200).toFixed(0)}M`,
+      `JUPITER ROUTE: ${Math.floor(2 + Math.random() * 3)} HOPS ▸ SLIPPAGE: ${(Math.random() * 0.3).toFixed(2)}% ▸ FEE: $${(Math.random() * 0.5).toFixed(3)}`
+    ];
+  }
+
+  function updateDataStream() {
+    const lines = dataStreamEl.querySelectorAll('.data-line');
+    const dataLines = generateDataLines();
+
+    lines.forEach((line, i) => {
+      if (dataLines[i]) {
+        line.textContent = dataLines[i];
+      }
+    });
+  }
+
+  // Initial fetch and setup
+  fetchRealData();
+  updateDataStream();
+
+  // Update data every 2 seconds
+  setInterval(updateDataStream, 2000);
+
+  // Fetch fresh real data every 30 seconds (CoinGecko rate limit friendly)
+  setInterval(fetchRealData, 30000);
 }
 
 // Initialize new effects
@@ -800,4 +1018,5 @@ document.addEventListener('DOMContentLoaded', () => {
   setupGeminiEffect();
   setupEncryptedText();
   setupMLTrainingCard();
+  setupDataStream();
 });

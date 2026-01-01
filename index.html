@@ -144,47 +144,120 @@
       <h2 class="section-title">THE PROTOCOL</h2>
       <p class="section-desc">Cortex deploys AI agents that operate with institutional-grade decision-making. Continuously analyzing market conditions across lending protocols, AMMs, and derivatives markets.</p>
 
-      <!-- ML Training Card -->
+      <!-- ML Training Card - Advanced -->
       <div class="ml-training-card">
+        <!-- Header -->
         <div class="ml-card-header">
-          <span class="ml-status-dot"></span>
-          <span class="ml-status-text">AGENT LEARNING</span>
-          <span class="ml-epoch">EPOCH: <span id="mlEpoch">0</span></span>
+          <div class="ml-header-left">
+            <span class="ml-status-dot"></span>
+            <span class="ml-status-text">CORTEX AGENT v2.1</span>
+          </div>
+          <div class="ml-header-right">
+            <span class="ml-mode">TRAINING MODE</span>
+            <span class="ml-epoch">EPOCH <span id="mlEpoch">0</span>/500</span>
+          </div>
         </div>
 
+        <!-- Main Body -->
         <div class="ml-card-body">
-          <!-- RGBA Shader Animation -->
-          <div class="ml-shader-container" id="mlShaderContainer"></div>
+          <!-- Left: Neural Network Visualization -->
+          <div class="ml-neural-section">
+            <div class="ml-section-label">NEURAL NETWORK</div>
+            <div class="ml-neural-network" id="neuralNetwork">
+              <svg class="neural-svg" viewBox="0 0 300 200">
+                <!-- Input Layer -->
+                <g class="nn-layer input-layer">
+                  <circle class="nn-node" cx="40" cy="30" r="8"/>
+                  <circle class="nn-node" cx="40" cy="60" r="8"/>
+                  <circle class="nn-node" cx="40" cy="90" r="8"/>
+                  <circle class="nn-node" cx="40" cy="120" r="8"/>
+                  <circle class="nn-node" cx="40" cy="150" r="8"/>
+                  <circle class="nn-node" cx="40" cy="180" r="8"/>
+                </g>
+                <!-- Hidden Layer 1 -->
+                <g class="nn-layer hidden-layer-1">
+                  <circle class="nn-node" cx="110" cy="40" r="8"/>
+                  <circle class="nn-node" cx="110" cy="75" r="8"/>
+                  <circle class="nn-node" cx="110" cy="110" r="8"/>
+                  <circle class="nn-node" cx="110" cy="145" r="8"/>
+                  <circle class="nn-node" cx="110" cy="180" r="8"/>
+                </g>
+                <!-- Hidden Layer 2 -->
+                <g class="nn-layer hidden-layer-2">
+                  <circle class="nn-node" cx="180" cy="55" r="8"/>
+                  <circle class="nn-node" cx="180" cy="95" r="8"/>
+                  <circle class="nn-node" cx="180" cy="135" r="8"/>
+                  <circle class="nn-node" cx="180" cy="175" r="8"/>
+                </g>
+                <!-- Output Layer -->
+                <g class="nn-layer output-layer">
+                  <circle class="nn-node nn-output" cx="250" cy="85" r="10"/>
+                  <circle class="nn-node nn-output" cx="250" cy="135" r="10"/>
+                </g>
+                <!-- Connections will be drawn by JS -->
+                <g class="nn-connections" id="nnConnections"></g>
+              </svg>
+              <div class="nn-labels">
+                <span>INPUT</span>
+                <span>HIDDEN</span>
+                <span>OUTPUT</span>
+              </div>
+            </div>
+          </div>
 
-          <!-- Data Feed Overlay -->
-          <div class="ml-data-overlay">
-            <div class="ml-data-row">
-              <span class="ml-label">INPUT</span>
-              <span class="ml-value" id="mlInput">SOL/USDC PRICE DATA</span>
+          <!-- Center: Data Stream -->
+          <div class="ml-data-section">
+            <div class="ml-section-label">DATA STREAM</div>
+            <div class="ml-data-stream" id="dataStream">
+              <div class="data-line"></div>
+              <div class="data-line"></div>
+              <div class="data-line"></div>
+              <div class="data-line"></div>
+              <div class="data-line"></div>
+              <div class="data-line"></div>
+              <div class="data-line"></div>
+              <div class="data-line"></div>
             </div>
-            <div class="ml-data-row">
-              <span class="ml-label">PROCESSING</span>
-              <span class="ml-value ml-processing" id="mlProcessing">████████░░</span>
+            <div class="ml-current-data">
+              <span class="data-label">PROCESSING:</span>
+              <span class="data-value" id="currentData">MARKET_DATA_FEED</span>
             </div>
-            <div class="ml-data-row">
-              <span class="ml-label">ACCURACY</span>
-              <span class="ml-value ml-accuracy" id="mlAccuracy">87.4%</span>
+          </div>
+
+          <!-- Right: Metrics & Graph -->
+          <div class="ml-metrics-section">
+            <div class="ml-section-label">TRAINING METRICS</div>
+            <div class="ml-loss-graph">
+              <canvas id="lossCanvas" width="200" height="80"></canvas>
+            </div>
+            <div class="ml-live-metrics">
+              <div class="metric-row">
+                <span class="metric-key">LOSS</span>
+                <span class="metric-val" id="mlLoss">0.4521</span>
+              </div>
+              <div class="metric-row">
+                <span class="metric-key">ACCURACY</span>
+                <span class="metric-val accent" id="mlAccuracy">76.2%</span>
+              </div>
+              <div class="metric-row">
+                <span class="metric-key">LR</span>
+                <span class="metric-val" id="mlLR">0.001</span>
+              </div>
+              <div class="metric-row">
+                <span class="metric-key">BATCH</span>
+                <span class="metric-val" id="mlBatch">64</span>
+              </div>
             </div>
           </div>
         </div>
 
+        <!-- Footer: Live Feed -->
         <div class="ml-card-footer">
-          <div class="ml-metric">
-            <span class="ml-metric-label">LOSS</span>
-            <span class="ml-metric-value" id="mlLoss">0.0234</span>
+          <div class="ml-console" id="mlConsole">
+            <div class="console-line">[INIT] Loading model weights...</div>
           </div>
-          <div class="ml-metric">
-            <span class="ml-metric-label">LR</span>
-            <span class="ml-metric-value">0.001</span>
-          </div>
-          <div class="ml-metric">
-            <span class="ml-metric-label">BATCH</span>
-            <span class="ml-metric-value" id="mlBatch">32</span>
+          <div class="ml-progress-bar">
+            <div class="progress-fill" id="mlProgress"></div>
           </div>
         </div>
       </div>
@@ -281,25 +354,99 @@
 
 <section class="section section-3" id="staking">
   <div class="section-content">
-    <div class="content-card">
-      <h2 class="section-title">TIERED ACCESS</h2>
-      <p class="section-desc">Stake CORTEX tokens to unlock higher-tier vaults and maximize your yield potential.</p>
-      <div class="tiers-grid">
+    <div class="content-card staking-card">
+      <h2 class="section-title">STAKING PROTOCOL</h2>
+      <p class="section-desc">Stake CRTX tokens to earn rewards and unlock higher-tier vault access.</p>
+
+      <!-- Pool Stats -->
+      <div class="staking-stats">
+        <div class="staking-stat">
+          <span class="stat-value">12,000,000</span>
+          <span class="stat-label">TOTAL POOL (CRTX)</span>
+        </div>
+        <div class="staking-stat">
+          <span class="stat-value">24</span>
+          <span class="stat-label">MONTHS EMISSION</span>
+        </div>
+        <div class="staking-stat">
+          <span class="stat-value">500,000</span>
+          <span class="stat-label">MONTHLY EMISSION</span>
+        </div>
+        <div class="staking-stat">
+          <span class="stat-value">~16,667</span>
+          <span class="stat-label">DAILY EMISSION</span>
+        </div>
+      </div>
+
+      <!-- Tier Cards -->
+      <div class="tier-section-label">[ SELECT YOUR TIER ]</div>
+      <div class="tiers-grid tiers-grid-3">
         <div class="tier-item tier-bronze">
-          <span class="tier-badge">BRONZE</span>
-          <p>Base access to public vaults</p>
+          <div class="tier-header">
+            <span class="tier-badge">BRONZE</span>
+            <span class="tier-lock">1 MONTH LOCK</span>
+          </div>
+          <div class="tier-multiplier">1.0x</div>
+          <div class="tier-apy">
+            <span class="apy-range">20-30%</span>
+            <span class="apy-label">TARGET APY</span>
+          </div>
+          <ul class="tier-benefits">
+            <li>Base vault access</li>
+            <li>Standard rewards</li>
+            <li>Community voting</li>
+          </ul>
         </div>
+
         <div class="tier-item tier-silver">
-          <span class="tier-badge">SILVER</span>
-          <p>Priority allocation + reduced fees</p>
+          <div class="tier-header">
+            <span class="tier-badge">SILVER</span>
+            <span class="tier-lock">3 MONTHS LOCK</span>
+          </div>
+          <div class="tier-multiplier">2.0x</div>
+          <div class="tier-apy">
+            <span class="apy-range">40-60%</span>
+            <span class="apy-label">TARGET APY</span>
+          </div>
+          <ul class="tier-benefits">
+            <li>Priority allocation</li>
+            <li>Reduced fees (25%)</li>
+            <li>Enhanced rewards</li>
+          </ul>
         </div>
+
         <div class="tier-item tier-gold">
-          <span class="tier-badge">GOLD</span>
-          <p>Exclusive vault access + governance</p>
+          <span class="tier-popular">POPULAR</span>
+          <div class="tier-header">
+            <span class="tier-badge">GOLD</span>
+            <span class="tier-lock">6 MONTHS LOCK</span>
+          </div>
+          <div class="tier-multiplier">3.5x</div>
+          <div class="tier-apy">
+            <span class="apy-range">70-100%</span>
+            <span class="apy-label">TARGET APY</span>
+          </div>
+          <ul class="tier-benefits">
+            <li>Exclusive vault access</li>
+            <li>Maximum fee reduction</li>
+            <li>Governance power</li>
+            <li>Revenue share</li>
+          </ul>
         </div>
-        <div class="tier-item tier-platinum">
-          <span class="tier-badge">PLATINUM</span>
-          <p>Maximum benefits + revenue share</p>
+      </div>
+
+      <!-- Emission Schedule -->
+      <div class="emission-info">
+        <div class="emission-header">
+          <span class="emission-icon">◈</span>
+          <span class="emission-title">EMISSION SCHEDULE</span>
+        </div>
+        <div class="emission-bar">
+          <div class="emission-progress" style="width: 0%"></div>
+        </div>
+        <div class="emission-details">
+          <span>Month 1 of 24</span>
+          <span>12,000,000 CRTX remaining</span>
         </div>
       </div>
     </div>
@@ -382,9 +529,10 @@
 <!-- Critique Part 2: The Philosophy -->
 <section class="critique-section critique-part-2" id="critique-2">
   <div class="critique-bg-2"></div>
-  <div class="critique-overlay"></div>
+  <div class="critique-overlay critique-overlay-2"></div>
   <div class="critique-content">
     <div class="critique-header">
+      <img src="images/richascii.png" alt="Rich" class="critique-header-image critique-image-green">
       <div class="glitch-text glitch-green" data-text="SYSTEM OVERRIDE">SYSTEM OVERRIDE</div>
       <span class="critique-label label-green">[ NEW ECONOMIC PARADIGM ]</span>
     </div>
