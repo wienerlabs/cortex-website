@@ -1,5 +1,4 @@
-let startClickSound,
-  preloaderSound,
+let preloaderSound,
   scrollSound1,
   scrollSound2,
   scrollSound3,
@@ -127,14 +126,12 @@ function setupGeometricBackground() {
 
 document.getElementById("enableBtn").onclick = function () {
   document.body.classList.add("loading-active");
-  startClickSound = document.getElementById("startClickSound");
   preloaderSound = document.getElementById("preloaderSound");
   scrollSound1 = document.getElementById("scrollSound1");
   scrollSound2 = document.getElementById("scrollSound2");
   scrollSound3 = document.getElementById("scrollSound3");
   backgroundMusic = document.getElementById("backgroundMusic");
 
-  if (startClickSound) startClickSound.play().catch((e) => {});
   document.querySelector(".audio-enable").style.display = "none";
   document.getElementById("preloader").style.display = "flex";
   if (preloaderSound) preloaderSound.play().catch((e) => {});

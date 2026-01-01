@@ -424,37 +424,6 @@ body::before {
   transition: opacity 0.3s ease;
 }
 
-.center-circle {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  z-index: 60;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  opacity: 1;
-  transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.4s ease;
-}
-
-.circle-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.glowing-circle {
-  width: 80px;
-  height: 80px;
-  background: #ffffff;
-  border-radius: 50%;
-  box-shadow: none;
-  position: relative;
-}
-
 .section-content {
   position: relative;
   z-index: 2;
@@ -1336,12 +1305,14 @@ body::before {
 /* Capitalism Critique Section */
 .critique-section {
   position: relative;
+  z-index: 8;
   min-height: 100vh;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  background: #0a0a0a;
 }
 
 .critique-bg {
@@ -1859,7 +1830,8 @@ body::before {
 /* Gemini Effect Section */
 .gemini-section {
   position: relative;
-  height: 200vh;
+  min-height: 100vh;
+  height: auto;
   background: #000;
   width: 100%;
   overflow: visible;
@@ -1867,43 +1839,25 @@ body::before {
   z-index: 5;
 }
 
-/* Hide fixed elements by default, show only when in gemini section */
-.gemini-ascii-bg,
-.gemini-cta-wrapper,
-.gemini-footer,
-.gemini-svg {
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.5s ease, visibility 0.5s ease;
-  pointer-events: none;
-}
-
-.gemini-section.in-view .gemini-ascii-bg,
-.gemini-section.in-view .gemini-cta-wrapper,
-.gemini-section.in-view .gemini-footer,
-.gemini-section.in-view .gemini-svg {
-  opacity: 1;
-  visibility: visible;
-}
-
-.gemini-section.in-view .gemini-ascii-bg {
+/* Gemini elements visibility */
+.gemini-ascii-bg {
   opacity: 0.15;
 }
 
 /* ASCII Background for Gemini */
 .gemini-ascii-bg {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  height: 100vh;
+  height: 100%;
   overflow: hidden;
   z-index: 1;
   pointer-events: none;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 1vh 0;
+  padding: 2rem 0;
 }
 
 .ascii-row {
@@ -1953,18 +1907,17 @@ body::before {
 
 /* CTA Wrapper - Centered with SVG */
 .gemini-cta-wrapper {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  position: relative;
   z-index: 20;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
 }
 
 /* Footer Stats - Bottom */
 .gemini-footer {
-  position: fixed;
-  bottom: 0;
-  left: 0;
+  position: relative;
   width: 100%;
   z-index: 15;
   padding: 2rem;
@@ -2110,15 +2063,14 @@ body::before {
 }
 
 .gemini-svg {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  position: relative;
   width: 100%;
   max-width: 1440px;
+  margin: 0 auto;
   height: auto;
   pointer-events: none;
   z-index: 5;
+  display: block;
 }
 
 .gemini-path {
@@ -2370,7 +2322,13 @@ body::before {
 
 /* Team Section */
 .team-section {
+  position: relative;
+  z-index: 10;
+  min-height: 100vh;
   background: #0a0a0a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .team-card {
@@ -2738,11 +2696,6 @@ body::before {
     display: none;
   }
 
-  .glowing-circle {
-    width: 60px;
-    height: 60px;
-  }
-
   .footer-right {
     max-width: 50%;
   }
@@ -2812,11 +2765,6 @@ body::before {
 
   .geometric-text.text-bottom-left {
     font-size: 10px;
-  }
-
-  .glowing-circle {
-    width: 50px;
-    height: 50px;
   }
 
   .section {
@@ -2942,11 +2890,6 @@ body::before {
     font-size: 8px;
   }
 
-  .glowing-circle {
-    width: 40px;
-    height: 40px;
-  }
-
   .content-card {
     padding: 1.5rem 1rem;
   }
@@ -3002,11 +2945,6 @@ body::before {
     flex-direction: column;
     align-items: center;
     gap: 0.5rem;
-  }
-
-  .glowing-circle {
-    width: 35px;
-    height: 35px;
   }
 
   .footer-left,
