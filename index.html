@@ -43,6 +43,10 @@
           <div class="nav-hover-square"></div>
         </li>
         <li>
+          <a href="#team" class="nav-link" data-section="team">TEAM</a>
+          <div class="nav-hover-square"></div>
+        </li>
+        <li>
           <a href="https://docs.cortex.finance" target="_blank" class="nav-link external">DOCS</a>
           <div class="nav-hover-square"></div>
         </li>
@@ -290,24 +294,24 @@
         </div>
       </div>
 
-      <div class="features-grid">
-        <div class="feature-item">
-          <span class="feature-icon">◈</span>
+      <div class="protocol-features">
+        <div class="protocol-feature">
+          <span class="pf-icon">◈</span>
           <h3>AUTONOMOUS VAULTS</h3>
           <p>Segregated vaults with distinct risk profiles managed by AI agents</p>
         </div>
-        <div class="feature-item">
-          <span class="feature-icon">◇</span>
+        <div class="protocol-feature">
+          <span class="pf-icon">◇</span>
           <h3>REAL YIELD</h3>
           <p>Performance fees distributed to stakers in SOL, not inflationary tokens</p>
         </div>
-        <div class="feature-item">
-          <span class="feature-icon">○</span>
+        <div class="protocol-feature">
+          <span class="pf-icon">○</span>
           <h3>ON-CHAIN TRANSPARENCY</h3>
           <p>All agent decisions logged and auditable on Solana</p>
         </div>
-        <div class="feature-item">
-          <span class="feature-icon">□</span>
+        <div class="protocol-feature">
+          <span class="pf-icon">□</span>
           <h3>SMART ALLOCATION</h3>
           <p>Multi-protocol strategies across Solend, Orca, Meteora & Jupiter</p>
         </div>
@@ -321,8 +325,11 @@
     <source src="images/efecto-recording-2025-12-31T18-45-58.mp4" type="video/mp4">
   </video>
   <div class="section-content">
-    <div class="content-card">
+    <div class="content-card how-it-works-card">
       <h2 class="section-title">HOW IT WORKS</h2>
+      <p class="section-desc">Autonomous yield optimization through AI-driven vault management</p>
+
+      <!-- Data Flow Pipeline -->
       <div class="flow-container">
         <div class="flow-step">
           <span class="step-number">01</span>
@@ -332,22 +339,104 @@
         <div class="flow-arrow">→</div>
         <div class="flow-step">
           <span class="step-number">02</span>
-          <h3>ALLOCATION</h3>
-          <p>AI agent analyzes opportunities, submits optimized strategy transactions</p>
+          <h3>ANALYZE</h3>
+          <p>AI agent evaluates opportunities across Solend, Orca, Meteora, Jupiter</p>
         </div>
         <div class="flow-arrow">→</div>
         <div class="flow-step">
           <span class="step-number">03</span>
-          <h3>EXECUTION</h3>
-          <p>Strategy contracts interact with external protocols via CPI</p>
+          <h3>EXECUTE</h3>
+          <p>Strategy contracts interact with DeFi protocols via cross-program invocation</p>
         </div>
         <div class="flow-arrow">→</div>
         <div class="flow-step">
           <span class="step-number">04</span>
-          <h3>DISTRIBUTION</h3>
-          <p>Treasury executes buybacks and distributes rewards to stakers</p>
+          <h3>HARVEST</h3>
+          <p>Yields collected, performance fees directed to treasury for distribution</p>
         </div>
       </div>
+
+      <!-- Key Features Grid -->
+      <div class="features-section">
+        <div class="features-label">[ KEY FEATURES ]</div>
+        <div class="features-grid">
+          <div class="feature-item">
+            <span class="feature-icon">◈</span>
+            <div class="feature-content">
+              <h4>AUTONOMOUS VAULTS</h4>
+              <p>Segregated vaults with distinct risk profiles managed by AI agents</p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <span class="feature-icon">◈</span>
+            <div class="feature-content">
+              <h4>REAL YIELD</h4>
+              <p>Performance fees distributed in SOL, not inflationary tokens</p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <span class="feature-icon">◈</span>
+            <div class="feature-content">
+              <h4>BUYBACK MECHANISM</h4>
+              <p>Systematic CRTX buybacks via Jupiter aggregator</p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <span class="feature-icon">◈</span>
+            <div class="feature-content">
+              <h4>ON-CHAIN TRANSPARENCY</h4>
+              <p>All agent decisions logged and auditable on Solana</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dual Wallet Architecture -->
+      <div class="architecture-section">
+        <div class="architecture-label">[ DUAL-WALLET SECURITY MODEL ]</div>
+        <div class="architecture-diagram">
+          <div class="arch-wallet arch-user">
+            <span class="wallet-badge">01</span>
+            <span class="wallet-name">USER WALLET</span>
+            <span class="wallet-type">FULL CUSTODY</span>
+            <span class="wallet-desc">Phantom, Solflare, Backpack</span>
+          </div>
+          <div class="arch-connector">
+            <span class="connector-line"></span>
+            <span class="connector-label">FUND TRANSFER</span>
+            <span class="connector-line"></span>
+          </div>
+          <div class="arch-wallet arch-agent">
+            <span class="wallet-badge">02</span>
+            <span class="wallet-name">AGENT WALLET</span>
+            <span class="wallet-type">SERVER-MANAGED</span>
+            <span class="wallet-desc">Limited funds, restricted operations</span>
+          </div>
+          <div class="arch-connector">
+            <span class="connector-line"></span>
+            <span class="connector-label">AUTONOMOUS OPS</span>
+            <span class="connector-line"></span>
+          </div>
+          <div class="arch-actions">
+            <div class="arch-action">
+              <span class="action-name">SWAP</span>
+              <span class="action-protocol">Jupiter Aggregator</span>
+              <span class="action-limit">MAX $100/TRADE</span>
+            </div>
+            <div class="arch-action">
+              <span class="action-name">STAKE</span>
+              <span class="action-protocol">JitoSOL, mSOL</span>
+              <span class="action-limit">MAX $1000/DAY</span>
+            </div>
+            <div class="arch-action">
+              <span class="action-name">REBALANCE</span>
+              <span class="action-protocol">Auto-trigger</span>
+              <span class="action-limit">2% TOLERANCE</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
@@ -596,6 +685,42 @@
   </div>
 </section>
 
+<!-- Team Section -->
+<section class="section team-section" id="team">
+  <div class="section-content">
+    <div class="content-card team-card">
+      <h2 class="section-title">THE ARCHITECTS</h2>
+      <p class="section-desc">Building the future of autonomous finance</p>
+
+      <div class="team-grid">
+        <div class="team-member">
+          <div class="member-image-container">
+            <img src="images/baudrillardascii.png" alt="serebraλ" class="member-image">
+            <div class="member-image-glow"></div>
+          </div>
+          <div class="member-info">
+            <h3 class="member-name">serebraλ</h3>
+            <span class="member-role">CORE ARCHITECT</span>
+            <p class="member-bio">Systems designer. Philosophy meets code. Building tools for financial sovereignty.</p>
+            <div class="member-links">
+              <a href="https://x.com/" target="_blank" class="member-link">𝕏</a>
+              <a href="https://github.com/" target="_blank" class="member-link">GH</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- More team members can be added here -->
+      </div>
+
+      <div class="team-join">
+        <span class="join-label">[ JOIN THE REVOLUTION ]</span>
+        <p>We're looking for builders who question everything.</p>
+        <a href="mailto:team@cortex.finance" class="join-cta">GET IN TOUCH →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- Gemini Effect Section -->
 <section class="gemini-section" id="gemini-effect">
   <!-- ASCII Background -->
@@ -716,6 +841,9 @@
   </div>
   <div class="footer-svg-section">
     <div class="footer-logo">
+      <div class="footer-logo-image">
+        <img src="images/logoascii.png" alt="CORTEX" class="footer-ascii-logo">
+      </div>
       <span class="footer-logo-text">CORTEX</span>
       <span class="footer-tagline">WHERE AI MEETS DEFI</span>
     </div>

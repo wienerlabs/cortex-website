@@ -372,11 +372,26 @@ function startAnimations() {
   const debugLine4 = document.getElementById("debugLine4");
   if (!circle) return;
 
+  const centerCircle = document.querySelector(".center-circle");
+
   let animationFrame;
   function updateAnimations() {
     const scrollY = window.scrollY;
     const maxScroll = document.body.scrollHeight - window.innerHeight;
     const progress = Math.min(scrollY / maxScroll, 1);
+
+    // Get "How it Works" section (vaults) position
+    const vaultsSection = document.getElementById("vaults");
+    const vaultsSectionEnd = vaultsSection ? vaultsSection.offsetTop + vaultsSection.offsetHeight : 0;
+
+    // Calculate fade out progress after "How it Works" section
+    // Fade starts at end of vaults section, completes over 300px scroll
+    const fadeStartPoint = vaultsSectionEnd - window.innerHeight * 0.3;
+    const fadeDistance = window.innerHeight * 0.5;
+    const circleFadeProgress = Math.max(0, Math.min(1, (scrollY - fadeStartPoint) / fadeDistance));
+
+    // Circle opacity: 1 → 0 after How it Works
+    const circleOpacity = 1 - circleFadeProgress;
 
     const footerStart =
       document.querySelector(".site-footer").offsetTop - window.innerHeight;
@@ -432,10 +447,25 @@ function startAnimations() {
       statusState = `STATUS: MAINNET`;
     }
 
-    const scale = 1 + progress * 1.8;
-    const shadowSize = progress * 150;
-    const shadowSpread = progress * 35;
-    const shadowOpacity = progress;
+    // Apply circle fade with smooth transition
+    if (centerCircle) {
+      centerCircle.style.opacity = circleOpacity;
+      centerCircle.style.transition = 'opacity 0.3s ease-out';
+
+      // Also hide pointer events when faded
+      if (circleOpacity < 0.1) {
+        centerCircle.style.visibility = 'hidden';
+      } else {
+        centerCircle.style.visibility = 'visible';
+      }
+    }
+
+    // Scale and glow only apply when circle is visible
+    const effectiveProgress = Math.min(progress, 1 - circleFadeProgress);
+    const scale = 1 + effectiveProgress * 1.8;
+    const shadowSize = effectiveProgress * 150;
+    const shadowSpread = effectiveProgress * 35;
+    const shadowOpacity = effectiveProgress;
     circle.style.transform = `scale(${scale})`;
     circle.style.transformOrigin = "center center";
     circle.style.boxShadow = `0 0 ${shadowSize}px ${shadowSpread}px rgba(255, 255, 0, ${shadowOpacity})`;
