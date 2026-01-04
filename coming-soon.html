@@ -256,6 +256,28 @@
       transform: scale(1.05);
     }
 
+    .cta-buttons {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .twitter-btn {
+      border-color: rgba(255, 183, 197, 0.4);
+      background: rgba(255, 183, 197, 0.05);
+    }
+
+    .twitter-btn::before {
+      background: linear-gradient(90deg, transparent, rgba(255, 183, 197, 0.3), transparent);
+    }
+
+    .twitter-btn:hover {
+      background: rgba(255, 183, 197, 0.15);
+      border-color: #FFB7C5;
+      box-shadow: 0 0 20px rgba(255, 183, 197, 0.3);
+    }
+
     .corner {
       position: fixed;
       width: 60px; height: 60px;
@@ -381,7 +403,10 @@
     <div class="label">[ DAYS UNTIL LAUNCH ]</div>
     <h1 class="title">COMING SOON</h1>
     <p class="subtitle">The autonomous yield optimization protocol is preparing for mainnet.</p>
-    <a href="/" class="back-link">← BACK TO HOME</a>
+    <div class="cta-buttons">
+      <a href="index.html" class="back-link">← BACK TO HOME</a>
+      <a href="https://x.com/cortexaitrade" target="_blank" class="back-link twitter-btn">𝕏 FOLLOW US</a>
+    </div>
   </div>
 
   <div class="social">
