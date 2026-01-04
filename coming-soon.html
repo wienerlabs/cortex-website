@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#000000">
+  <title>CORTEX | Coming Soon</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root { --font-primary: 'Pixelify Sans', system-ui, sans-serif; }
+
+    body {
+      background: #000;
+      color: #f5f5f5;
+      font-family: var(--font-primary);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Matrix Rain */
+    .matrix-rain {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.15;
+    }
+
+    /* Scan Lines */
+    .scanlines {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 0, 0, 0.3) 2px,
+        rgba(0, 0, 0, 0.3) 4px
+      );
+      pointer-events: none;
+      z-index: 100;
+      animation: scanMove 8s linear infinite;
+    }
+
+    @keyframes scanMove {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(4px); }
+    }
+
+    /* Glitch Overlay */
+    .glitch-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      pointer-events: none;
+      z-index: 99;
+      animation: glitchOverlay 0.3s infinite;
+    }
+
+    @keyframes glitchOverlay {
+      0%, 90%, 100% { opacity: 0; }
+      91% { opacity: 0.03; background: #ff0000; }
+      93% { opacity: 0; }
+      95% { opacity: 0.02; background: #00ff00; }
+      97% { opacity: 0.03; background: #0000ff; }
+    }
+
+    /* Grid Background */
+    .bg-grid {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-image:
+        linear-gradient(rgba(79, 171, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(79, 171, 255, 0.05) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      animation: gridPulse 4s ease-in-out infinite;
+    }
+
+    @keyframes gridPulse {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; }
+    }
+
+    /* Horizontal Scanner */
+    .scanner {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, #4FABFF, transparent);
+      z-index: 50;
+      animation: scanDown 3s ease-in-out infinite;
+      box-shadow: 0 0 20px #4FABFF, 0 0 40px #4FABFF;
+    }
+
+    @keyframes scanDown {
+      0% { top: -10px; opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { top: 100vh; opacity: 0; }
+    }
+
+    .content {
+      text-align: center;
+      z-index: 10;
+      padding: 2rem;
+      position: relative;
+    }
+
+    /* Glitch Countdown */
+    .countdown {
+      font-size: clamp(80px, 20vw, 200px);
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      position: relative;
+      display: inline-block;
+      animation: countdownPulse 2s ease-in-out infinite;
+    }
+
+    .countdown-main {
+      background: linear-gradient(135deg, #FFB7C5, #FFDDB7, #B1C5FF, #4FABFF);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      background-size: 300% 300%;
+      animation: gradientShift 3s ease infinite;
+    }
+
+    .countdown::before,
+    .countdown::after {
+      content: 'M-27';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: linear-gradient(135deg, #FFB7C5, #FFDDB7, #B1C5FF, #4FABFF);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .countdown::before {
+      animation: glitchTop 1s infinite;
+      clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+    }
+
+    .countdown::after {
+      animation: glitchBottom 1.5s infinite;
+      clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
+    }
+
+    @keyframes glitchTop {
+      0%, 90%, 100% { transform: translate(0); }
+      92% { transform: translate(-8px, -2px); }
+      94% { transform: translate(8px, 2px); }
+      96% { transform: translate(-4px, -1px); }
+      98% { transform: translate(4px, 1px); }
+    }
+
+    @keyframes glitchBottom {
+      0%, 88%, 100% { transform: translate(0); }
+      90% { transform: translate(5px, 1px); }
+      93% { transform: translate(-5px, -1px); }
+      96% { transform: translate(3px, 0); }
+    }
+
+    @keyframes countdownPulse {
+      0%, 100% { transform: scale(1); filter: brightness(1); }
+      50% { transform: scale(1.02); filter: brightness(1.1); }
+    }
+
+    @keyframes gradientShift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    .label {
+      font-size: clamp(12px, 2vw, 16px);
+      letter-spacing: 0.5em;
+      color: rgba(245, 245, 245, 0.4);
+      margin-bottom: 3rem;
+      animation: labelFlicker 4s infinite;
+    }
+
+    @keyframes labelFlicker {
+      0%, 95%, 100% { opacity: 0.4; }
+      96% { opacity: 0.1; }
+      97% { opacity: 0.5; }
+      98% { opacity: 0.2; }
+      99% { opacity: 0.6; }
+    }
+
+    .title {
+      font-size: clamp(24px, 5vw, 48px);
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      margin-bottom: 1rem;
+      position: relative;
+      animation: titleGlitch 5s infinite;
+    }
+
+    @keyframes titleGlitch {
+      0%, 92%, 100% { text-shadow: none; transform: translateX(0); }
+      93% { text-shadow: -3px 0 #ff0040, 3px 0 #00ff88; transform: translateX(-2px); }
+      94% { text-shadow: 3px 0 #ff0040, -3px 0 #00ff88; transform: translateX(2px); }
+      95% { text-shadow: -2px 0 #4FABFF, 2px 0 #FFB7C5; transform: translateX(-1px); }
+    }
+
+    .subtitle {
+      font-size: clamp(14px, 2vw, 18px);
+      color: rgba(245, 245, 245, 0.6);
+      max-width: 500px;
+      line-height: 1.6;
+      margin-bottom: 3rem;
+    }
+
+    .back-link {
+      display: inline-block;
+      padding: 1rem 2rem;
+      border: 1px solid rgba(79, 171, 255, 0.4);
+      color: #f5f5f5;
+      text-decoration: none;
+      font-size: 14px;
+      letter-spacing: 0.2em;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      background: rgba(79, 171, 255, 0.05);
+    }
+
+    .back-link::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(79, 171, 255, 0.3), transparent);
+      animation: buttonSweep 3s infinite;
+    }
+
+    @keyframes buttonSweep {
+      0% { left: -100%; }
+      50%, 100% { left: 100%; }
+    }
+
+    .back-link:hover {
+      background: rgba(79, 171, 255, 0.15);
+      border-color: #4FABFF;
+      box-shadow: 0 0 20px rgba(79, 171, 255, 0.3);
+      transform: scale(1.05);
+    }
+
+    .corner {
+      position: fixed;
+      width: 60px; height: 60px;
+      border: 1px solid rgba(79, 171, 255, 0.3);
+      z-index: 20;
+    }
+    .corner-tl { top: 20px; left: 20px; border-right: none; border-bottom: none; }
+    .corner-tr { top: 20px; right: 20px; border-left: none; border-bottom: none; }
+    .corner-bl { bottom: 20px; left: 20px; border-right: none; border-top: none; }
+    .corner-br { bottom: 20px; right: 20px; border-left: none; border-top: none; }
+
+    .data-stream {
+      position: fixed;
+      font-size: 10px;
+      letter-spacing: 0.3em;
+      color: rgba(79, 171, 255, 0.3);
+      white-space: nowrap;
+      z-index: 5;
+      animation: dataScroll 20s linear infinite;
+    }
+    .data-stream.top { top: 60px; }
+    .data-stream.bottom { bottom: 60px; animation-direction: reverse; }
+
+    @keyframes dataScroll {
+      0% { transform: translateX(100vw); }
+      100% { transform: translateX(-100%); }
+    }
+
+    .social {
+      position: absolute;
+      bottom: 2rem;
+      display: flex;
+      gap: 2rem;
+      z-index: 20;
+    }
+
+    .social a {
+      color: rgba(245, 245, 245, 0.4);
+      text-decoration: none;
+      font-size: 12px;
+      letter-spacing: 0.2em;
+      transition: all 0.3s ease;
+    }
+
+    .social a:hover {
+      color: #4FABFF;
+      text-shadow: 0 0 10px rgba(79, 171, 255, 0.5);
+    }
+
+    .glow {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+      filter: blur(60px);
+    }
+    .glow-1 {
+      width: 500px; height: 500px;
+      background: rgba(79, 171, 255, 0.15);
+      top: 30%; left: 20%;
+      animation: floatGlow1 8s ease-in-out infinite;
+    }
+    .glow-2 {
+      width: 400px; height: 400px;
+      background: rgba(255, 183, 197, 0.1);
+      top: 40%; right: 15%;
+      animation: floatGlow2 10s ease-in-out infinite;
+    }
+
+    @keyframes floatGlow1 {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(50px, -30px) scale(1.2); }
+    }
+    @keyframes floatGlow2 {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(-40px, 40px) scale(1.1); }
+    }
+
+    .status {
+      position: fixed;
+      top: 30px; right: 100px;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      color: rgba(68, 255, 136, 0.6);
+      z-index: 20;
+    }
+    .status-dot {
+      width: 6px; height: 6px;
+      background: #44ff88;
+      border-radius: 50%;
+      animation: statusBlink 1s infinite;
+    }
+    @keyframes statusBlink {
+      0%, 50%, 100% { opacity: 1; }
+      25%, 75% { opacity: 0.3; }
+    }
+  </style>
+</head>
+<body>
+  <canvas class="matrix-rain" id="matrix"></canvas>
+  <div class="scanlines"></div>
+  <div class="glitch-overlay"></div>
+  <div class="bg-grid"></div>
+  <div class="scanner"></div>
+
+  <div class="glow glow-1"></div>
+  <div class="glow glow-2"></div>
+
+  <div class="corner corner-tl"></div>
+  <div class="corner corner-tr"></div>
+  <div class="corner corner-bl"></div>
+  <div class="corner corner-br"></div>
+
+  <div class="status"><span class="status-dot"></span><span>MAINNET PENDING</span></div>
+
+  <div class="data-stream top">░▒▓ YIELD OPTIMIZATION ░▒▓ AI AGENTS ACTIVE ░▒▓ SOLANA ░▒▓ TVL: CALCULATING ░▒▓ APY: PENDING ░▒▓</div>
+  <div class="data-stream bottom">▓▒░ AUTONOMOUS EXECUTION ▓▒░ MULTI-MODEL CONSENSUS ▓▒░ RISK ASSESSMENT ▓▒░ VAULT PREP ▓▒░</div>
+
+  <div class="content">
+    <div class="countdown"><span class="countdown-main">M-27</span></div>
+    <div class="label">[ DAYS UNTIL LAUNCH ]</div>
+    <h1 class="title">COMING SOON</h1>
+    <p class="subtitle">The autonomous yield optimization protocol is preparing for mainnet.</p>
+    <a href="/" class="back-link">← BACK TO HOME</a>
+  </div>
+
+  <div class="social">
+    <a href="https://x.com/cortexaitrade" target="_blank">𝕏 TWITTER</a>
+    <a href="https://discord.gg/cortex" target="_blank">DISCORD</a>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('matrix');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const chars = 'CORTEX01アイウエオカキクケコ';
+    const fontSize = 14;
+    const columns = canvas.width / fontSize;
+    const drops = Array(Math.floor(columns)).fill(1);
+
+    function drawMatrix() {
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.font = fontSize + 'px monospace';
+
+      for (let i = 0; i < drops.length; i++) {
+        const char = chars[Math.floor(Math.random() * chars.length)];
+        ctx.fillStyle = Math.random() > 0.98 ? '#FFB7C5' : 'rgba(79, 171, 255, 0.5)';
+        ctx.fillText(char, i * fontSize, drops[i] * fontSize);
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+        drops[i]++;
+      }
+    }
+    setInterval(drawMatrix, 50);
+    window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
+  </script>
+</body>
+</html>
