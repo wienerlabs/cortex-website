@@ -1,7 +1,4 @@
 let preloaderSound,
-  scrollSound1,
-  scrollSound2,
-  scrollSound3,
   backgroundMusic;
 let isBackgroundPlaying = true;
 let currentSection = 1;
@@ -11,8 +8,11 @@ let circleTransitions = [];
 function setupGeometricBackground() {
   const gridLinesGroup = document.getElementById("grid-lines");
   const circlesOutlineGroup = document.getElementById("circles-outline");
-  const circlesFilledGroup = document.querySelector("#circles-filled > g");
-  if (!gridLinesGroup || !circlesOutlineGroup || !circlesFilledGroup) return;
+  const circlesFilledGroup = document.getElementById("circles-filled");
+  if (!gridLinesGroup || !circlesOutlineGroup || !circlesFilledGroup) {
+    console.error("Geometric background elements not found");
+    return;
+  }
 
   const gridSpacing = 48;
   for (let i = 0; i <= 40; i++) {
@@ -43,58 +43,60 @@ function setupGeometricBackground() {
   const d = 80;
   const centerX = 960;
   const centerY = 540;
+  
+  // ORIGINAL positions - circles will converge then disperse in SAME direction
   circleTransitions = [
+    // From left
     {
-      initial: { cx: centerX - 3 * d, cy: centerY, r: d * 0.8 },
-      final: { cx: centerX, cy: centerY, r: 4 * d }
+      initial: { cx: centerX - 3 * d, cy: centerY, r: d * 0.8 }
     },
+    // From right
     {
-      initial: { cx: centerX + 3 * d, cy: centerY, r: d * 0.8 },
-      final: { cx: centerX, cy: centerY, r: 4 * d }
+      initial: { cx: centerX + 3 * d, cy: centerY, r: d * 0.8 }
     },
+    // From top
     {
-      initial: { cx: centerX, cy: centerY - 3 * d, r: d * 0.8 },
-      final: { cx: centerX, cy: centerY, r: 4 * d }
+      initial: { cx: centerX, cy: centerY - 3 * d, r: d * 0.8 }
     },
+    // From bottom
     {
-      initial: { cx: centerX, cy: centerY + 3 * d, r: d * 0.8 },
-      final: { cx: centerX, cy: centerY, r: 4 * d }
+      initial: { cx: centerX, cy: centerY + 3 * d, r: d * 0.8 }
     },
+    // Top-left diagonal
     {
-      initial: { cx: centerX - 2 * d, cy: centerY - 2 * d, r: d * 0.6 },
-      final: { cx: centerX, cy: centerY, r: 4 * d }
+      initial: { cx: centerX - 2 * d, cy: centerY - 2 * d, r: d * 0.6 }
     },
+    // Top-right diagonal
     {
-      initial: { cx: centerX + 2 * d, cy: centerY - 2 * d, r: d * 0.6 },
-      final: { cx: centerX, cy: centerY, r: 4 * d }
+      initial: { cx: centerX + 2 * d, cy: centerY - 2 * d, r: d * 0.6 }
     },
+    // Bottom-left diagonal
     {
-      initial: { cx: centerX - 2 * d, cy: centerY + 2 * d, r: d * 0.6 },
-      final: { cx: centerX, cy: centerY, r: 4 * d }
+      initial: { cx: centerX - 2 * d, cy: centerY + 2 * d, r: d * 0.6 }
     },
+    // Bottom-right diagonal
     {
-      initial: { cx: centerX + 2 * d, cy: centerY + 2 * d, r: d * 0.6 },
-      final: { cx: centerX, cy: centerY, r: 4 * d }
+      initial: { cx: centerX + 2 * d, cy: centerY + 2 * d, r: d * 0.6 }
     },
+    // Far left
     {
-      initial: { cx: centerX - 4 * d, cy: centerY, r: d * 0.4 },
-      final: { cx: centerX, cy: centerY, r: 4 * d }
+      initial: { cx: centerX - 4 * d, cy: centerY, r: d * 0.4 }
     },
+    // Far right
     {
-      initial: { cx: centerX + 4 * d, cy: centerY, r: d * 0.4 },
-      final: { cx: centerX, cy: centerY, r: 4 * d }
+      initial: { cx: centerX + 4 * d, cy: centerY, r: d * 0.4 }
     },
+    // Far top
     {
-      initial: { cx: centerX, cy: centerY - 4 * d, r: d * 0.4 },
-      final: { cx: centerX, cy: centerY, r: 4 * d }
+      initial: { cx: centerX, cy: centerY - 4 * d, r: d * 0.4 }
     },
+    // Far bottom
     {
-      initial: { cx: centerX, cy: centerY + 4 * d, r: d * 0.4 },
-      final: { cx: centerX, cy: centerY, r: 4 * d }
+      initial: { cx: centerX, cy: centerY + 4 * d, r: d * 0.4 }
     },
+    // Center growing circle
     {
-      initial: { cx: centerX, cy: centerY, r: d * 0.3 },
-      final: { cx: centerX, cy: centerY, r: 4 * d }
+      initial: { cx: centerX, cy: centerY, r: d * 0.3 }
     }
   ];
 
@@ -127,9 +129,6 @@ function setupGeometricBackground() {
 document.getElementById("enableBtn").onclick = function () {
   document.body.classList.add("loading-active");
   preloaderSound = document.getElementById("preloaderSound");
-  scrollSound1 = document.getElementById("scrollSound1");
-  scrollSound2 = document.getElementById("scrollSound2");
-  scrollSound3 = document.getElementById("scrollSound3");
   backgroundMusic = document.getElementById("backgroundMusic");
 
   document.querySelector(".audio-enable").style.display = "none";
@@ -166,6 +165,10 @@ document.getElementById("enableBtn").onclick = function () {
 };
 
 function setupSectionScrollSounds() {
+  // DISABLED: Scroll sounds removed for better UX
+  console.log('Scroll sounds disabled');
+  return;
+  
   let scrollTimeout;
 
   function getCurrentSection() {
@@ -192,7 +195,8 @@ function setupSectionScrollSounds() {
       stopAllScrollSounds();
       currentSection = newSection;
     }
-    const currentScrollSound = eval(`scrollSound${currentSection}`);
+    const scrollSounds = { 1: scrollSound1, 2: scrollSound2, 3: scrollSound3 };
+    const currentScrollSound = scrollSounds[currentSection];
     if (currentScrollSound && currentScrollSound.paused) {
       currentScrollSound.currentTime = 0;
       currentScrollSound.play().catch((e) => {});
@@ -282,11 +286,24 @@ function startAnimations() {
     const link = navItem.querySelector(".nav-link");
     const hoverSound = document.getElementById("hoverSound");
 
+    let isScrolling = false;
+    let scrollTimeout = null;
+
+    // Track scrolling to prevent sound on scroll
+    window.addEventListener("scroll", () => {
+      isScrolling = true;
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        isScrolling = false;
+      }, 100);
+    }, { passive: true });
+
     navItem.addEventListener("mouseenter", () => {
-      if (!link.classList.contains("active")) {
+      if (!link.classList.contains("active") && !isScrolling) {
         gsap.to(square, { scaleX: 1, duration: 0.3, ease: "power2.out" });
       }
-      if (hoverSound) {
+      // Only play sound if not scrolling
+      if (hoverSound && !isScrolling) {
         hoverSound.currentTime = 0;
         hoverSound.volume = 0.3;
         hoverSound.play().catch((e) => {});
@@ -308,9 +325,7 @@ function startAnimations() {
       if (backgroundMusic) {
         backgroundMusic.muted = isMuted;
       }
-      [scrollSound1, scrollSound2, scrollSound3].forEach((sound) => {
-        if (sound) sound.muted = isMuted;
-      });
+      // Scroll sounds removed
     });
   }
 
@@ -323,7 +338,8 @@ function startAnimations() {
     mouseMultiplier: 1,
     smoothTouch: false,
     touchMultiplier: 2,
-    infinite: false
+    infinite: false,
+    prevent: (node) => node.classList.contains('no-lenis')
   });
 
   lenis.on("scroll", ScrollTrigger.update);
@@ -367,9 +383,11 @@ function startAnimations() {
   const debugLine2 = document.getElementById("debugLine2");
   const debugLine3 = document.getElementById("debugLine3");
   const debugLine4 = document.getElementById("debugLine4");
-  if (!circle) return;
-
-  const centerCircle = document.querySelector(".center-circle");
+  const centerCircle = document.getElementById("center-circle");
+  
+  if (!circle) {
+    console.warn("Center glow circle not found");
+  }
 
   let animationFrame;
   function updateAnimations() {
@@ -446,10 +464,33 @@ function startAnimations() {
 
     // Apply circle fade with smooth transition
     if (centerCircle) {
+      // Two-phase animation for center circle
+      let centerRadius, centerGlow, centerOpacityMod;
+      
+      if (progress < 0.5) {
+        // Phase 1 (0-50%): Growing as circles converge
+        const phase1Progress = progress * 2;
+        centerRadius = 50 + phase1Progress * 80;
+        centerGlow = phase1Progress * 150;
+        centerOpacityMod = 0.6;
+      } else {
+        // Phase 2 (50-100%): Shrinking as circles disperse
+        const phase2Progress = (progress - 0.5) * 2;
+        centerRadius = 130 - phase2Progress * 120;
+        centerGlow = (1 - phase2Progress) * 150;
+        centerOpacityMod = 0.6 * (1 - phase2Progress);
+      }
+      
+      if (circle) {
+        circle.setAttribute('r', centerRadius);
+        circle.style.filter = `drop-shadow(0 0 ${centerGlow}px rgba(255, 255, 136, ${centerOpacityMod * (1 - circleFadeProgress)}))`;
+        circle.setAttribute('stroke-opacity', circleOpacity * centerOpacityMod);
+      }
+      
       centerCircle.style.opacity = circleOpacity;
       centerCircle.style.transition = 'opacity 0.3s ease-out';
 
-      // Also hide pointer events when faded
+      // Hide when faded
       if (circleOpacity < 0.1) {
         centerCircle.style.visibility = 'hidden';
       } else {
@@ -457,33 +498,52 @@ function startAnimations() {
       }
     }
 
-    // Scale and glow only apply when circle is visible
-    const effectiveProgress = Math.min(progress, 1 - circleFadeProgress);
-    const scale = 1 + effectiveProgress * 1.8;
-    const shadowSize = effectiveProgress * 150;
-    const shadowSpread = effectiveProgress * 35;
-    const shadowOpacity = effectiveProgress;
-    circle.style.transform = `scale(${scale})`;
-    circle.style.transformOrigin = "center center";
-    circle.style.boxShadow = `0 0 ${shadowSize}px ${shadowSpread}px rgba(255, 255, 0, ${shadowOpacity})`;
-
     const gridOpacity = Math.max(0, 0.3 * (1 - progress * 1.5));
     document.querySelectorAll(".grid-line").forEach((line) => {
       line.setAttribute("stroke-opacity", gridOpacity);
     });
 
+    // TWO-PHASE CIRCLE ANIMATION
     circleTransitions.forEach((transition, index) => {
-      const currentCx =
-        transition.initial.cx +
-        (transition.final.cx - transition.initial.cx) * progress;
-      const currentCy =
-        transition.initial.cy +
-        (transition.final.cy - transition.initial.cy) * progress;
-      const currentR =
-        transition.initial.r +
-        (transition.final.r - transition.initial.r) * progress;
-      const rotation = progress * 360 * (index % 2 === 0 ? 1 : -1);
-      const opacity = Math.max(0.1, 1 - progress * 0.7);
+      let currentCx, currentCy, currentR, rotation, opacity;
+      
+      if (progress < 0.5) {
+        // PHASE 1 (0-50%): Converge to center
+        const phase1Progress = progress * 2; // 0 → 1
+        const easeInOutCubic = (t) => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+        const easedProgress = easeInOutCubic(phase1Progress);
+        
+        // Move from initial to center
+        currentCx = transition.initial.cx + (960 - transition.initial.cx) * easedProgress;
+        currentCy = transition.initial.cy + (540 - transition.initial.cy) * easedProgress;
+        currentR = transition.initial.r + (80 * 4 - transition.initial.r) * easedProgress;
+        
+        rotation = phase1Progress * 720 * (index % 2 === 0 ? 1 : -1);
+        opacity = Math.max(0.15, 1 - phase1Progress * 0.85);
+        
+      } else {
+        // PHASE 2 (50-100%): Disperse outward from center in SAME direction AND SHRINK
+        const phase2Progress = (progress - 0.5) * 2; // 0 → 1
+        const easeOutQuart = (t) => 1 - Math.pow(1 - t, 4);
+        const easedProgress = easeOutQuart(phase2Progress);
+        
+        // Calculate direction from center to initial position
+        const directionX = transition.initial.cx - 960;
+        const directionY = transition.initial.cy - 540;
+        
+        // Extend in same direction but go further (off-screen)
+        const multiplier = 1 + easedProgress * 5; // Extend 5x further
+        currentCx = 960 + directionX * multiplier;
+        currentCy = 540 + directionY * multiplier;
+        
+        // ENHANCED SHRINKING: Start from max size (320) and shrink rapidly to nearly 0
+        // Using exponential easing for dramatic shrinking effect
+        const shrinkEase = Math.pow(1 - easedProgress, 2); // Exponential shrink
+        currentR = 80 * 4 * shrinkEase; // 320 → 0 (more dramatic shrinking)
+        
+        rotation = 720 + phase2Progress * 360 * (index % 2 === 0 ? 1 : -1);
+        opacity = Math.min(0.9, 0.2 + phase2Progress * 0.7);
+      }
 
       if (transition.outlineCircle) {
         transition.outlineCircle.setAttribute("cx", currentCx);
@@ -503,7 +563,7 @@ function startAnimations() {
           "transform",
           `rotate(${rotation} ${currentCx} ${currentCy})`
         );
-        transition.filledCircle.setAttribute("fill-opacity", opacity * 0.05);
+        transition.filledCircle.setAttribute("fill-opacity", opacity * 0.1);
       }
     });
 
@@ -523,47 +583,103 @@ function startAnimations() {
 // Gemini Effect - Scroll-based SVG path animation
 function setupGeminiEffect() {
   const geminiSection = document.querySelector('.gemini-section');
-  const paths = document.querySelectorAll('.gemini-path');
+  const mainPaths = document.querySelectorAll('.gemini-path:not(.gemini-blur)');
+  const blurPaths = document.querySelectorAll('.gemini-blur');
 
-  if (!geminiSection || paths.length === 0) return;
+  if (!geminiSection) {
+    console.warn('Gemini section not found');
+    return;
+  }
+
+  if (mainPaths.length === 0) {
+    console.warn('Gemini paths not found');
+    return;
+  }
+
+  console.log('Gemini Effect: Found', mainPaths.length, 'main paths and', blurPaths.length, 'blur paths');
 
   // Initial offsets for staggered animation
   const initialOffsets = [0.8, 0.85, 0.9, 0.95, 1.0];
-
-  paths.forEach((path) => {
+  
+  // Store path lengths for main paths
+  const mainPathData = [];
+  mainPaths.forEach((path, index) => {
     const length = path.getTotalLength();
-    path.style.strokeDasharray = length;
-    path.style.strokeDashoffset = length;
+    mainPathData.push({ path, length });
+    path.style.strokeDasharray = `${length}`;
+    path.style.strokeDashoffset = `${length}`;
   });
+
+  // Store path lengths for blur paths
+  const blurPathData = [];
+  blurPaths.forEach((path, index) => {
+    const length = path.getTotalLength();
+    blurPathData.push({ path, length });
+    path.style.strokeDasharray = `${length}`;
+    path.style.strokeDashoffset = `${length}`;
+  });
+
+  let geminiAnimationFrame = null;
 
   function updateGeminiPaths() {
     const rect = geminiSection.getBoundingClientRect();
     const sectionHeight = geminiSection.offsetHeight;
     const viewportHeight = window.innerHeight;
 
-    // Check if section is in view and toggle class
+    // Check if section is in view
     const isInView = rect.top < viewportHeight && rect.bottom > 0;
-    if (isInView) {
-      geminiSection.classList.add('in-view');
-    } else {
+    
+    if (!isInView) {
       geminiSection.classList.remove('in-view');
+      return;
     }
+    
+    geminiSection.classList.add('in-view');
 
     // Calculate progress (0 to 1) based on scroll position
+    // Animation starts when section enters viewport
     const scrolled = viewportHeight - rect.top;
-    const progress = Math.max(0, Math.min(1, scrolled / (sectionHeight - viewportHeight * 0.5)));
+    const triggerPoint = sectionHeight + viewportHeight * 0.5;
+    const progress = Math.max(0, Math.min(1, scrolled / triggerPoint));
 
-    paths.forEach((path, index) => {
-      const length = path.getTotalLength();
+    // Animate main paths
+    mainPathData.forEach((data, index) => {
+      const { path, length } = data;
       const delay = initialOffsets[index] || 1;
-      const adjustedProgress = Math.max(0, (progress - (1 - delay) * 0.2) / (1 - (1 - delay) * 0.2));
-      const drawLength = length * (1 - Math.max(0, Math.min(1, adjustedProgress * 1.2)));
-      path.style.strokeDashoffset = drawLength;
+      
+      // Staggered animation: each path starts at different point
+      const startPoint = (1 - delay) * 0.25;
+      const adjustedProgress = Math.max(0, Math.min(1, (progress - startPoint) / (1 - startPoint)));
+      
+      // Draw from full offset (hidden) to 0 (visible)
+      const drawLength = length * (1 - adjustedProgress);
+      path.style.strokeDashoffset = `${drawLength}`;
+    });
+
+    // Animate blur paths (same timing)
+    blurPathData.forEach((data, index) => {
+      const { path, length } = data;
+      const delay = initialOffsets[index] || 1;
+      
+      const startPoint = (1 - delay) * 0.25;
+      const adjustedProgress = Math.max(0, Math.min(1, (progress - startPoint) / (1 - startPoint)));
+      
+      const drawLength = length * (1 - adjustedProgress);
+      path.style.strokeDashoffset = `${drawLength}`;
     });
   }
 
-  window.addEventListener('scroll', updateGeminiPaths);
+  function handleGeminiScroll() {
+    if (geminiAnimationFrame) cancelAnimationFrame(geminiAnimationFrame);
+    geminiAnimationFrame = requestAnimationFrame(updateGeminiPaths);
+  }
+
+  window.addEventListener('scroll', handleGeminiScroll, { passive: true });
+  
+  // Initial call
   updateGeminiPaths();
+  
+  console.log('Gemini Effect: Initialized successfully');
 }
 
 // Encrypted Text Effect - Scramble on hover

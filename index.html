@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#000000">
   <title>CORTEX | Autonomous Yield Optimization on Solana</title>
   <meta name="description" content="Cortex is a decentralized yield generation protocol where AI agents manage liquidity vaults on Solana.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -82,14 +83,20 @@
 </div>
 
 <div class="geometric-background">
-  <svg class="geometric-svg" viewBox="0 0 1920 1080">
-    <g id="grid-lines"></g>
-    <g id="circles-outline"></g>
-    <g id="circles-filled">
+  <svg class="geometric-svg" viewBox="-400 -400 2720 1880" overflow="visible">
+    <defs>
       <clipPath id="right-half">
         <rect x="960" y="0" width="960" height="1080" />
       </clipPath>
-      <g clip-path="url(#right-half)"></g>
+    </defs>
+    
+    <g id="grid-lines"></g>
+    <g id="circles-outline"></g>
+    <g id="circles-filled" clip-path="url(#right-half)"></g>
+    
+    <!-- Center glow circle -->
+    <g id="center-circle" class="center-circle">
+      <circle id="glowCircle" cx="960" cy="540" r="50" fill="none" stroke="rgba(255, 255, 136, 0.4)" stroke-width="2"/>
     </g>
 
     <text class="geometric-text" x="100" y="100">AUTONOMOUS</text>
@@ -114,17 +121,7 @@
   <source src="https://assets.codepen.io/7558/preloader-5s-001.mp3" type="audio/mpeg">
 </audio>
 
-<audio id="scrollSound1" loop preload="auto">
-  <source src="https://assets.codepen.io/7558/glitch-fx-001.mp3" type="audio/mpeg">
-</audio>
-
-<audio id="scrollSound2" loop preload="auto">
-  <source src="https://assets.codepen.io/7558/glitch-fx-001.mp3" type="audio/mpeg">
-</audio>
-
-<audio id="scrollSound3" loop preload="auto">
-  <source src="https://assets.codepen.io/7558/glitch-fx-001.mp3" type="audio/mpeg">
-</audio>
+<!-- Scroll sounds removed for better UX -->
 
 <audio id="hoverSound" preload="auto">
   <source src="https://assets.codepen.io/7558/preloader-2s-001.mp3" type="audio/mpeg">
